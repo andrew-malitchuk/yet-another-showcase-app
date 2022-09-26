@@ -14,3 +14,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "yet-another-showcase-app"
 include ':app'
+include ':core'
+include ':core:ui'
+include ':core:common'
+include ':core:platform'
+include ':data'
+include ':domain'
+include ':navigation'
