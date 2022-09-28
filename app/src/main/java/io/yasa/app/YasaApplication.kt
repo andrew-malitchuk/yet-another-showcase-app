@@ -8,4 +8,5 @@ class YasaApplication : Application(), KodeinAware {
     override val kodein: Kodein by Kodein.lazy {
 
     }
+
 }
