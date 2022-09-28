@@ -4,12 +4,14 @@ plugins {
 }
 
 android {
-    namespace 'io.yasa.data'
+    namespace 'io.yasa.database'
     compileSdk 33
 
     defaultConfig {
         minSdk 21
         targetSdk 33
+
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -31,8 +33,4 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
-
-    implementation 'org.kodein.di:kodein-di-generic-jvm:6.5.0'
-    implementation 'org.kodein.di:kodein-di-framework-android-core:6.5.0'
-    implementation 'org.kodein.di:kodein-di-framework-android-x:6.5.0'
 }
