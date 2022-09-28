@@ -10,6 +10,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://dl.bintray.com/kodein-framework/Kodein-DI/' }
     }
 }
 rootProject.name = "yet-another-showcase-app"

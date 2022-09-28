@@ -37,4 +37,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation project(path:":core:ui")
+
+    implementation 'org.kodein.di:kodein-di:7.14.0'
+    implementation 'org.kodein.di:kodein-di-generic-jvm:6.5.0'
+    implementation 'org.kodein.di:kodein-di-framework-android-core:7.14.0'
+    implementation 'org.kodein.di:kodein-di-framework-android-x:7.14.0'
 }
