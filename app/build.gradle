@@ -42,4 +42,5 @@ dependencies {
     implementation 'org.kodein.di:kodein-di-framework-android-core:6.5.0'
     implementation 'org.kodein.di:kodein-di-framework-android-x:6.5.0'
 
+    implementation project(path: ":core:platform")
 }
