@@ -43,6 +43,7 @@ dependencies {
     implementation project(path: ":core:ui")
     implementation project(path: ":navigation")
     implementation project(path: ":feature:list")
+    implementation project(path: ":feature:details")
 
     implementation 'androidx.navigation:navigation-fragment:2.5.2'
     implementation 'androidx.navigation:navigation-ui:2.5.2'

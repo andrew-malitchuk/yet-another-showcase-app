@@ -2,6 +2,7 @@ package io.yasa.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 import io.yasa.main.databinding.ActivityMainBinding
 import io.yasa.navigation.NavigationFlow
 import io.yasa.navigation.Navigator
@@ -17,8 +18,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), ToFlowNavigatabl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         with(viewBinding) {
-//            val navController = findNavController(R.id.nav_host_fragment)
-//            navigator.navController = navController
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            val navController = navHostFragment.navController
+            navigator.navController = navController
         }
     }
 
