@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="main_flow" type="id" />
+    <item name="details_flow" type="id" />
+    <item name="list_flow" type="id" />
+    <item name="search_flow" type="id" />
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/list_flow">
+
+    <include app:graph="@navigation/list_flow" />
+
+    <include app:graph="@navigation/details_flow" />
+
+    <include app:graph="@navigation/search_flow" />
+
+    <!--    <action-->
+    <!--        android:id="@+id/action_list_flow"-->
+    <!--        app:destination="@id/list_flow"/>-->
+    <!--    <action-->
+    <!--        android:id="@+id/action_details_flow"-->
+    <!--        app:destination="@id/details_flow"-->
+    <!--        app:popUpTo="@id/main_nav_graph" />-->
+    <!--    <action-->
+    <!--        android:id="@+id/action_search_flow"-->
+    <!--        app:destination="@id/search_flow" />-->
+
+</navigation>
