@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -36,6 +37,11 @@ dependencies {
     implementation 'org.kodein.di:kodein-di-generic-jvm:6.5.0'
     implementation 'org.kodein.di:kodein-di-framework-android-core:6.5.0'
     implementation 'org.kodein.di:kodein-di-framework-android-x:6.5.0'
+
+    implementation "androidx.room:room-runtime:2.4.3"
+    annotationProcessor "androidx.room:room-compiler:2.4.3"
+    kapt "androidx.room:room-compiler:2.4.3"
+    implementation "androidx.room:room-paging:2.5.0-alpha03"
 
 
 }
