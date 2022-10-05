@@ -26,10 +26,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
             }
             adapter?.submitList(
                 listOf(
-                    Foobar("foo1", "bar1"),
-                    Foobar("foo2", "bar2"),
-                    Foobar("foo3", "bar3"),
-                    Foobar("foo4", "bar4"),
+
                 )
             )
         }

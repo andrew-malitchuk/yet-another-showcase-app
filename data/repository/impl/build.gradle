@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'io.yasa.database'
+    namespace 'io.yasa.repository.impl'
     compileSdk 33
 
     defaultConfig {

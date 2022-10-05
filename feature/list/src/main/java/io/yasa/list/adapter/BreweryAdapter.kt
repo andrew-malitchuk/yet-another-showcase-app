@@ -4,11 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import io.yasa.list.Foobar
 import io.yasa.list.databinding.ItemBreweryBinding
+import io.yasa.models.data.model.BreweryUiModel
 
-class BreweryAdapter(val context: Context, var onClick: ((item: Foobar) -> Unit)? = null) :
-    ListAdapter<Foobar, BreweryItemViewHolder>(ListDiffUtil()) {
+class BreweryAdapter(val context: Context, var onClick: ((item: BreweryUiModel) -> Unit)? = null) :
+    ListAdapter<BreweryUiModel, BreweryItemViewHolder>(ListDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreweryItemViewHolder {
         return BreweryItemViewHolder(

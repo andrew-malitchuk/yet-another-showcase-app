@@ -1,8 +1,8 @@
-package io.yasa.details.data.mapper
+package io.yasa.models.data.mapper
 
 import io.yasa.common.data.mapper.DomainUiMapper
-import io.yasa.details.data.model.BreweryUiModel
 import io.yasa.domain.model.BreweryDomainModel
+import io.yasa.models.data.model.BreweryUiModel
 
 class BreweryDomainUiMapper : DomainUiMapper<BreweryDomainModel, BreweryUiModel>() {
 

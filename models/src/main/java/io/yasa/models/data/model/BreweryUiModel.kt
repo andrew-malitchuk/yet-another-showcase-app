@@ -1,4 +1,4 @@
-package io.yasa.details.data.model
+package io.yasa.models.data.model
 
 import io.yasa.common.data.model.UiModel
 
