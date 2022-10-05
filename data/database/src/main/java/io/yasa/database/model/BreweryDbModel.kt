@@ -3,6 +3,7 @@ package io.yasa.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import io.yasa.common.data.model.DbModel
 
 @Entity(tableName = "Breweries")
 data class BreweryDbModel(
@@ -24,4 +25,4 @@ data class BreweryDbModel(
     @ColumnInfo(name = "website_url") var websiteUrl: String? = null,
     @ColumnInfo(name = "updated_at") var updatedAt: String? = null,
     @ColumnInfo(name = "created_at") var createdAt: String? = null
-)
+) : DbModel

@@ -41,6 +41,8 @@ dependencies {
 
     implementation project(path: ":core:platform")
     implementation project(path: ":core:ui")
+    implementation project(path: ":core:common")
+    implementation project(path: ":domain")
     implementation project(path: ":navigation")
 
     implementation 'androidx.navigation:navigation-fragment:2.5.2'

@@ -36,4 +36,6 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.4.3"
     kapt "androidx.room:room-compiler:2.4.3"
     implementation "androidx.room:room-paging:2.5.0-alpha03"
+
+    implementation project(path: ":core:common")
 }
