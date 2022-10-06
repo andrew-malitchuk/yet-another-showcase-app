@@ -30,4 +30,16 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
+
+    implementation 'org.kodein.di:kodein-di-generic-jvm:6.5.0'
+    implementation 'org.kodein.di:kodein-di-framework-android-core:6.5.0'
+    implementation 'org.kodein.di:kodein-di-framework-android-x:6.5.0'
+
+    implementation project(path: ":core:common")
+    implementation project(path: ":data:repository")
+    implementation project(path: ":data:network")
+    implementation project(path: ":data:network")
+    implementation project(path: ":data:database")
+
+
 }

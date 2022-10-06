@@ -8,7 +8,7 @@ import io.yasa.common.data.model.DbModel
 @Entity(tableName = "Breweries")
 data class BreweryDbModel(
     @PrimaryKey
-    @ColumnInfo(name = "id") var id: String? = null,
+    @ColumnInfo(name = "id") var id: String,
     @ColumnInfo(name = "name") var name: String? = null,
     @ColumnInfo(name = "brewery_type") var breweryType: String? = null,
     @ColumnInfo(name = "street") var street: String? = null,

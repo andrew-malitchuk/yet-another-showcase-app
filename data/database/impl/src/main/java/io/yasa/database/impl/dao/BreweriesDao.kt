@@ -2,6 +2,7 @@ package io.yasa.database.impl.dao
 
 import androidx.room.*
 import io.yasa.database.model.BreweryDbModel
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BreweriesDao {
@@ -29,4 +30,7 @@ interface BreweriesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(list: List<BreweryDbModel>)
+
+    @Query("SELECT * FROM Breweries")
+    fun observeChanges(): Flow<List<BreweryDbModel>>
 }

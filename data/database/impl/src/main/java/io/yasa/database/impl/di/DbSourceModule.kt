@@ -10,7 +10,6 @@ import org.kodein.di.generic.provider
 internal val dbSourceModule = Kodein.Module("dbSourceModule") {
     bind<BreweriesDbSource>() with provider {
         BreweriesDbSourceImpl(
-            instance(),
             instance()
         )
     }

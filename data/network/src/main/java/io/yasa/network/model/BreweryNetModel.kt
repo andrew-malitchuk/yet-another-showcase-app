@@ -2,6 +2,7 @@ package io.yasa.network.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import io.yasa.common.data.model.NetModel
 
 @JsonClass(generateAdapter = true)
 data class BreweryNetModel(
@@ -22,4 +23,4 @@ data class BreweryNetModel(
     @Json(name = "website_url") var websiteUrl: String? = null,
     @Json(name = "updated_at") var updatedAt: String? = null,
     @Json(name = "created_at") var createdAt: String? = null
-)
+): NetModel

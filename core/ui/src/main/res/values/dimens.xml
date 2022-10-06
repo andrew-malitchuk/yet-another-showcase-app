@@ -136,4 +136,6 @@
     </dimen>
     <!-- Toolbars -->
     <!-- Tooltips -->
+
+    <dimen name="image_size">64dp</dimen>
 </resources>

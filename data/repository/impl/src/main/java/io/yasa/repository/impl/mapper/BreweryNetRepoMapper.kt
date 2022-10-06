@@ -1,12 +1,12 @@
-package io.yasa.domain.mapper
+package io.yasa.repository.impl.mapper
 
-import io.yasa.common.data.mapper.DbDomainMapper
-import io.yasa.database.model.BreweryDbModel
-import io.yasa.domain.model.BreweryDomainModel
+import io.yasa.common.data.mapper.NetRepoMapper
+import io.yasa.network.model.BreweryNetModel
+import io.yasa.repository.model.BreweryRepoModel
 
-class BreweryDbDomainMapper : DbDomainMapper<BreweryDbModel, BreweryDomainModel>() {
+class BreweryNetRepoMapper : NetRepoMapper<BreweryNetModel, BreweryRepoModel>() {
 
-    override fun mapTo(from: BreweryDbModel) = BreweryDomainModel(
+    override fun mapTo(from: BreweryNetModel) = BreweryRepoModel(
         from.id,
         from.name,
         from.breweryType,
@@ -21,11 +21,11 @@ class BreweryDbDomainMapper : DbDomainMapper<BreweryDbModel, BreweryDomainModel>
         from.longitude,
         from.latitude,
         from.phone,
-        from.websiteUrl
+        from.websiteUrl,
     )
 
-    override fun mapFrom(to: BreweryDomainModel) = BreweryDbModel(
-        to.id?:"",
+    override fun mapFrom(to: BreweryRepoModel) = BreweryNetModel(
+        to.id,
         to.name,
         to.breweryType,
         to.street,
@@ -39,8 +39,7 @@ class BreweryDbDomainMapper : DbDomainMapper<BreweryDbModel, BreweryDomainModel>
         to.longitude,
         to.latitude,
         to.phone,
-        to.websiteUrl
+        to.websiteUrl,
     )
-
 
 }
