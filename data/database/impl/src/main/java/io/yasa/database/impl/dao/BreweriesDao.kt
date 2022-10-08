@@ -14,7 +14,7 @@ interface BreweriesDao {
     fun insert(list: List<BreweryDbModel>)
 
     @Query("SELECT * FROM Breweries")
-    suspend fun get(): List<BreweryDbModel>
+    suspend fun getAll(): List<BreweryDbModel>
 
     @Query("SELECT * FROM Breweries WHERE id = :id")
     suspend fun get(id: String): BreweryDbModel

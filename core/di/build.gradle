@@ -38,5 +38,15 @@ dependencies {
     implementation 'org.kodein.di:kodein-di-framework-android-core:6.5.0'
     implementation 'org.kodein.di:kodein-di-framework-android-x:6.5.0'
     implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.10'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+
+    implementation 'androidx.navigation:navigation-fragment:2.5.2'
+    implementation 'androidx.navigation:navigation-ui:2.5.2'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+
 
 }

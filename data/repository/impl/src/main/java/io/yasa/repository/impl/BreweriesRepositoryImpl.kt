@@ -55,7 +55,7 @@ class BreweriesRepositoryImpl(
         }
     }
 
-    override suspend fun observeBreweriesChanges(): Flow<List<BreweryRepoModel>> {
+    override fun observeBreweriesChanges(): Flow<List<BreweryRepoModel>> {
         return breweriesDbSource.observeChanges().map { dbList ->
             dbList.map { dbModel ->
                 dbRepoMapper.mapTo(dbModel)

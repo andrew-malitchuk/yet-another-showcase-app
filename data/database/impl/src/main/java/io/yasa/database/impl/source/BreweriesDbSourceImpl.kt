@@ -14,7 +14,7 @@ class BreweriesDbSourceImpl(
     }
 
     override suspend fun getBreweries(page: Int, perPage: Int): List<BreweryDbModel> {
-        return breweriesDao.get()
+        return breweriesDao.getAll()
     }
 
     override suspend fun replaceAll(list: List<BreweryDbModel>) {

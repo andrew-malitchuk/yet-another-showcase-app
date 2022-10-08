@@ -19,4 +19,10 @@ data class BreweryUiModel(
     var latitude: String? = null,
     var phone: String? = null,
     var websiteUrl: String? = null,
-) : UiModel
+) : UiModel {
+    val fullAddress: String
+        get() {
+            return "$street ${address2 ?: ""} ${address3 ?: ""} $city $state $country"
+        }
+
+}

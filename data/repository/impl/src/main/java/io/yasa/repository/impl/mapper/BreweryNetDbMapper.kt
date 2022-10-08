@@ -7,7 +7,7 @@ import io.yasa.network.model.BreweryNetModel
 class BreweryNetDbMapper : NetDbMapper<BreweryNetModel, BreweryDbModel>() {
 
     override fun mapTo(from: BreweryNetModel) = BreweryDbModel(
-        from.id,
+        from.id?:"",
         from.name,
         from.breweryType,
         from.street,

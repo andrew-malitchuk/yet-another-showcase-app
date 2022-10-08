@@ -39,6 +39,12 @@ dependencies {
     implementation project(path: ":core:ui")
     implementation project(path: ":data:network")
     implementation project(path: ":data:network:impl")
+    implementation project(path: ":data:database")
+    implementation project(path: ":data:database:impl")
+    implementation project(path: ":data:repository")
+    implementation project(path: ":data:repository:impl")
+    implementation project(path: ":core:di")
+    implementation project(path: ":domain")
 
     implementation 'org.kodein.di:kodein-di-generic-jvm:6.5.0'
     implementation 'org.kodein.di:kodein-di-framework-android-core:6.5.0'
@@ -46,4 +52,7 @@ dependencies {
 
     implementation project(path: ":core:platform")
     implementation project(path: ":feature:main")
+    implementation project(path: ":feature:list")
+
+    implementation 'com.squareup.logcat:logcat:0.1'
 }

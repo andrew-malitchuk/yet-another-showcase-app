@@ -1,12 +1,12 @@
 package io.yasa.domain.mapper
 
-import io.yasa.common.data.mapper.DbDomainMapper
-import io.yasa.database.model.BreweryDbModel
+import io.yasa.common.data.mapper.RepoDomainMapper
 import io.yasa.domain.model.BreweryDomainModel
+import io.yasa.repository.model.BreweryRepoModel
 
-class BreweryDbDomainMapper : DbDomainMapper<BreweryDbModel, BreweryDomainModel>() {
+class BreweryRepoDomainMapper : RepoDomainMapper<BreweryRepoModel, BreweryDomainModel>() {
 
-    override fun mapTo(from: BreweryDbModel) = BreweryDomainModel(
+    override fun mapTo(from: BreweryRepoModel) = BreweryDomainModel(
         from.id,
         from.name,
         from.breweryType,
@@ -24,8 +24,8 @@ class BreweryDbDomainMapper : DbDomainMapper<BreweryDbModel, BreweryDomainModel>
         from.websiteUrl
     )
 
-    override fun mapFrom(to: BreweryDomainModel) = BreweryDbModel(
-        to.id?:"",
+    override fun mapFrom(to: BreweryDomainModel) = BreweryRepoModel(
+        to.id ?: "",
         to.name,
         to.breweryType,
         to.street,
@@ -41,6 +41,5 @@ class BreweryDbDomainMapper : DbDomainMapper<BreweryDbModel, BreweryDomainModel>
         to.phone,
         to.websiteUrl
     )
-
 
 }
