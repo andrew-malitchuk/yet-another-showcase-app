@@ -1,5 +1,6 @@
 package io.yasa.main
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -13,6 +14,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.android.subKodein
 
+
 class MainActivity : AppCompatActivity(R.layout.activity_main), ToFlowNavigatable, KodeinAware {
 
     private val navigator: Navigator = Navigator()
@@ -22,7 +24,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), ToFlowNavigatabl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         with(viewBinding) {
-            val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            val navHostFragment = if(isPortrait(this@MainActivity)) {
+                supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            }else{
+                supportFragmentManager.findFragmentById(R.id.nav_details_fragment) as NavHostFragment
+            }
             val navController = navHostFragment.navController
             navigator.navController = navController
         }
@@ -37,4 +43,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), ToFlowNavigatabl
 //        bind<Context>(overrides = true) with provider { this@MainActivity }
 //		bind<Activity>() with provider { this@BaseActivity }
     }
+
+    fun isPortrait(context: Context): Boolean {
+        return context.resources.getBoolean(R.bool.is_portrait)
+    }
+
 }

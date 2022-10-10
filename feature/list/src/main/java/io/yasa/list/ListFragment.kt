@@ -29,8 +29,14 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = BreweryAdapter(requireContext()) {
-            (requireActivity() as? ToFlowNavigatable)?.navigateToFlow(NavigationFlow.DetailsFlow)
+        adapter = BreweryAdapter(requireContext()) { uiModel ->
+            uiModel.id?.let {
+                (requireActivity() as? ToFlowNavigatable)?.navigateToFlow(
+                    NavigationFlow.DetailsFlow(
+                        it
+                    )
+                )
+            }
         }
         with(viewBinding) {
             rvItems.apply {

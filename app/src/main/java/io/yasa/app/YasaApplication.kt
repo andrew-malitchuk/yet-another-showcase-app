@@ -2,6 +2,7 @@ package io.yasa.app
 
 import android.app.Application
 import io.yasa.database.impl.di.databaseModule
+import io.yasa.details.di.detailsModule
 import io.yasa.domain.di.domainModule
 import io.yasa.list.di.listModule
 import io.yasa.network.impl.di.networkModule
@@ -20,6 +21,7 @@ class YasaApplication : Application(), KodeinAware {
         importAll(*repositoryModule)
         importAll(domainModule)
         importAll(listModule)
+        importAll(detailsModule)
         import(androidXModule(this@YasaApplication))
     }
 

@@ -2,6 +2,6 @@ package io.yasa.navigation
 
 sealed class NavigationFlow {
     object ListFlow : NavigationFlow()
-    object DetailsFlow : NavigationFlow()
+    class DetailsFlow(val id: String) : NavigationFlow()
     object SearchFlow : NavigationFlow()
 }

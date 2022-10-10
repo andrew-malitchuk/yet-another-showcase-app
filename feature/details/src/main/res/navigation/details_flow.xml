@@ -6,6 +6,10 @@
 
     <fragment
         android:id="@+id/fragment_details"
-        android:name="io.yasa.details.DetailsFragment" />
+        android:name="io.yasa.details.DetailsFragment" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

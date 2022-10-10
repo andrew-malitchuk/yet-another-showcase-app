@@ -53,6 +53,7 @@ dependencies {
     implementation project(path: ":core:platform")
     implementation project(path: ":feature:main")
     implementation project(path: ":feature:list")
+    implementation project(path: ":feature:details")
 
     implementation 'com.squareup.logcat:logcat:0.1'
 }
