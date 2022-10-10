@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import coil.load
 import io.yasa.details.databinding.FragmentDetailsBinding
 import io.yasa.di.kodeinViewModel
 import io.yasa.ui.viewbinding.viewBinding
@@ -29,13 +30,15 @@ class DetailsFragment : Fragment(R.layout.fragment_details), KodeinAware {
         }
 
         lifecycleScope.launch {
-
             viewModel.getBrewery(detailsFragmentArgs.id).let { breweryItem ->
                 with(viewBinding) {
-                    mtToolbar.apply {
-                        title = breweryItem.name
+                    ctlToolbar.title = breweryItem.name
+                    ivLogo.load("https://loremflickr.com/320/240")
 
-                    }
+//                    mtToolbar.apply {
+//                        title = breweryItem.name
+//
+//                    }
                 }
             }
         }
