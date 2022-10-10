@@ -2,6 +2,10 @@ package io.yasa.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
+import io.yasa.domain.datasource.BreweriesRemoteDataSource
 import io.yasa.domain.usecase.BreweriesUseCase
 import io.yasa.models.data.mapper.BreweryDomainUiMapper
 import io.yasa.models.data.model.BreweryUiModel
@@ -11,11 +15,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class ListViewModel(
-    private val breweriesUseCase: BreweriesUseCase
+    private val breweriesUseCase: BreweriesUseCase,
+    private val breweriesRemoteDataSource: BreweriesRemoteDataSource
 ) : ViewModel() {
 
     private val uiMapper: BreweryDomainUiMapper = BreweryDomainUiMapper()
-
 
     val breweriesStateFlow: Flow<List<BreweryUiModel>> =
         breweriesUseCase.breweriesStateFlow.map { domainList ->
@@ -40,5 +44,14 @@ class ListViewModel(
         breweriesUseCase.refreshBreweries(1)
     }
 
+    fun getBreweries(): Flow<PagingData<BreweryUiModel>> {
+        return breweriesRemoteDataSource.getBreweries()
+            .map { pagingData ->
+                pagingData.map { domainModel ->
+                    uiMapper.mapTo(domainModel)
+                }
+            }
+            .cachedIn(viewModelScope)
+    }
 
 }

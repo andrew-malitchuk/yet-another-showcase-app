@@ -3,12 +3,12 @@ package io.yasa.list.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import io.yasa.list.databinding.ItemBreweryBinding
 import io.yasa.models.data.model.BreweryUiModel
 
 class BreweryAdapter(val context: Context, var onClick: ((item: BreweryUiModel) -> Unit)? = null) :
-    ListAdapter<BreweryUiModel, BreweryItemViewHolder>(ListDiffUtil()) {
+    PagingDataAdapter<BreweryUiModel, BreweryItemViewHolder>(ListDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreweryItemViewHolder {
         return BreweryItemViewHolder(
@@ -22,7 +22,7 @@ class BreweryAdapter(val context: Context, var onClick: ((item: BreweryUiModel) 
     }
 
     override fun onBindViewHolder(holder: BreweryItemViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        getItem(position)?.let { holder.bind(it) }
     }
 
 }

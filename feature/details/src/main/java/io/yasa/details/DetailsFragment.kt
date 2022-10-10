@@ -32,7 +32,10 @@ class DetailsFragment : Fragment(R.layout.fragment_details), KodeinAware {
 
             viewModel.getBrewery(detailsFragmentArgs.id).let { breweryItem ->
                 with(viewBinding) {
-                    foo.text = breweryItem.name
+                    mtToolbar.apply {
+                        title = breweryItem.name
+
+                    }
                 }
             }
         }

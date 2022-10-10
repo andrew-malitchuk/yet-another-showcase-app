@@ -1,16 +1,19 @@
 package io.yasa.list
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.yasa.di.kodeinViewModel
 import io.yasa.list.adapter.BreweryAdapter
 import io.yasa.list.databinding.FragmentListBinding
 import io.yasa.navigation.NavigationFlow
 import io.yasa.navigation.ToFlowNavigatable
+import io.yasa.ui.viewbinding.snap.GravitySnapHelper
 import io.yasa.ui.viewbinding.viewBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import logcat.logcat
 import org.kodein.di.Kodein
@@ -39,28 +42,32 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             }
         }
         with(viewBinding) {
+            val divider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL).apply {
+                isLastItemDecorated = false
+            }
+
             rvItems.apply {
                 this.adapter = this@ListFragment.adapter
+                addItemDecoration(divider)
+                GravitySnapHelper(Gravity.TOP).attachToRecyclerView(this)
             }
         }
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.refreshBreweries()
-        }
-
+//        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
         lifecycleScope.launch {
-            viewModel.breweriesStateFlow.collect { breweryList ->
-                adapter?.submitList(breweryList)
+            viewModel.getBreweries().collect{pagingData->
+                logcat { pagingData.toString() }
+                adapter?.submitData(pagingData)
             }
-        }
+       }
 
-        lifecycleScope.launch {
-            viewModel.getBrewery("10-56-brewing-company-knox").let { breweryItem ->
-                logcat("list") { breweryItem.toString() }
-            }
-        }
+//        lifecycleScope.launch {
+//            viewModel.getBrewery("10-56-brewing-company-knox").let { breweryItem ->
+//                logcat("list") { breweryItem.toString() }
+//            }
+//        }
 
-        viewModel.getAndSaveBreweries(1)
+//        viewModel.getAndSaveBreweries(1)
 
     }
 

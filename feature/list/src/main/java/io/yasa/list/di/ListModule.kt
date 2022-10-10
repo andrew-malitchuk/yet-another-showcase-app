@@ -20,6 +20,7 @@ val listModule = Kodein.Module("listModule") {
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(kodein.direct) }
 
     bindViewModel<ListViewModel>() with provider {
-        ListViewModel(instance())
+        ListViewModel(instance(), instance())
     }
+
 }
