@@ -2,6 +2,7 @@ package io.yasa.list.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
 
 import io.yasa.list.databinding.ItemBreweryBinding
 import io.yasa.models.data.model.BreweryUiModel
@@ -15,7 +16,9 @@ class BreweryItemViewHolder(
         with(viewBinding) {
             tvTitle.text = item.name
             tvDescription.text = item.fullAddress
-            ivLogo.load("https://loremflickr.com/320/240")
+            ivLogo.load("https://loremflickr.com/320/240"){
+                transformations(CircleCropTransformation())
+            }
             root.setOnClickListener {
                 onClick?.invoke(item)
             }

@@ -42,7 +42,10 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             }
         }
         with(viewBinding) {
-            val divider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL).apply {
+            val divider = MaterialDividerItemDecoration(
+                requireContext(),
+                LinearLayoutManager.VERTICAL
+            ).apply {
                 isLastItemDecorated = false
             }
 
@@ -53,21 +56,12 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             }
         }
 
-//        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
         lifecycleScope.launch {
-            viewModel.getBreweries().collect{pagingData->
+            viewModel.getBreweries().collect { pagingData ->
                 logcat { pagingData.toString() }
                 adapter?.submitData(pagingData)
             }
-       }
-
-//        lifecycleScope.launch {
-//            viewModel.getBrewery("10-56-brewing-company-knox").let { breweryItem ->
-//                logcat("list") { breweryItem.toString() }
-//            }
-//        }
-
-//        viewModel.getAndSaveBreweries(1)
+        }
 
     }
 
