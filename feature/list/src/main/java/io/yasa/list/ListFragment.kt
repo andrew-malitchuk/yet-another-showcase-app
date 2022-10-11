@@ -14,6 +14,7 @@ import io.yasa.navigation.NavigationFlow
 import io.yasa.navigation.ToFlowNavigatable
 import io.yasa.ui.viewbinding.snap.GravitySnapHelper
 import io.yasa.ui.viewbinding.viewBinding
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import logcat.logcat
 import org.kodein.di.Kodein
@@ -57,7 +58,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
         }
 
         lifecycleScope.launch {
-            viewModel.getBreweries().collect { pagingData ->
+            viewModel.getBreweries().collectLatest { pagingData ->
                 logcat { pagingData.toString() }
                 adapter?.submitData(pagingData)
             }

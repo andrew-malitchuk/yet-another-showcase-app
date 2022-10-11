@@ -29,15 +29,21 @@ class BreweriesRepositoryImpl(
                 netDbMapper.mapTo(netModel)
             }
         }.also { dbList ->
-//            if (page == 1) {
-//                breweriesDbSource.replaceAll(dbList)
-//            } else {
-//                breweriesDbSource.addOrReplace(dbList)
-//            }
+            if (page == 1) {
+                breweriesDbSource.replaceAll(dbList)
+            } else {
+                breweriesDbSource.addOrReplace(dbList)
+            }
         }.let { netList ->
             netList.map { netModel ->
                 dbRepoMapper.mapTo(netModel)
             }
+        }
+    }
+
+    override suspend fun getBreweries(page: Int, perPage: Int): List<BreweryRepoModel> {
+        return breweriesDbSource.getBreweries(page, perPage).map { dbModel ->
+            dbRepoMapper.mapTo(dbModel)
         }
     }
 
@@ -62,5 +68,6 @@ class BreweriesRepositoryImpl(
             }
         }
     }
+
 
 }

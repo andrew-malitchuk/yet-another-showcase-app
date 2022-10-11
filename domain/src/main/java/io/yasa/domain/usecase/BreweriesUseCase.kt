@@ -31,6 +31,12 @@ class BreweriesUseCase(
         }
     }
 
+    suspend fun getBreweries(page: Int): List<BreweryDomainModel> {
+        return breweriesRepository.getBreweries(page, PER_PAGE_ITEMS).map { repoModel ->
+            repoDomainMapper.mapTo(repoModel)
+        }
+    }
+
     suspend fun refreshBreweries(page: Int) {
         breweriesRepository.refreshBreweries(page, PER_PAGE_ITEMS)
     }

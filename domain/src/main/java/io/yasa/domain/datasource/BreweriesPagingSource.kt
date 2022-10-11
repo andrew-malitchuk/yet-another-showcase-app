@@ -25,7 +25,7 @@ class BreweriesPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, BreweryDomainModel> {
         return try {
             val page = params.key ?: FIRST_PAGE
-            val response = useCase.getAndSaveBreweries(page)
+            val response = useCase.getBreweries(page)
             logcat{response.toString()}
             LoadResult.Page(
                 data = response,

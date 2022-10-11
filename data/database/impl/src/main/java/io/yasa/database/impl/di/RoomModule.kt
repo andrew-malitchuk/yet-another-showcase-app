@@ -21,5 +21,6 @@ private fun createRoomDatabase(context: Context): YasaRoomDb {
         YasaRoomDb::class.java.simpleName
     )
         .fallbackToDestructiveMigration()
+        .allowMainThreadQueries()
         .build()
 }

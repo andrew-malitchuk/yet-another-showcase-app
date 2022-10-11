@@ -16,6 +16,7 @@ val domainModule = Kodein.Module("domainModule") {
     }
     bind<BreweriesRemoteDataSource>() with provider {
         BreweriesRemoteDataSourceImp(
+            instance(),
             instance()
         )
     }

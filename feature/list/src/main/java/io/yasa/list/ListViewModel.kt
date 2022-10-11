@@ -11,6 +11,7 @@ import io.yasa.models.data.mapper.BreweryDomainUiMapper
 import io.yasa.models.data.model.BreweryUiModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -50,8 +51,7 @@ class ListViewModel(
                 pagingData.map { domainModel ->
                     uiMapper.mapTo(domainModel)
                 }
-            }
-            .cachedIn(viewModelScope)
+            }.cachedIn(viewModelScope).flowOn(Dispatchers.IO)
     }
 
 }
