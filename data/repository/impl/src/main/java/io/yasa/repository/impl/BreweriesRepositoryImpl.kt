@@ -19,8 +19,8 @@ class BreweriesRepositoryImpl(
 ) : BreweriesRepository {
 
     override suspend fun getBrewery(id: String): BreweryRepoModel =
-        breweriesNetSource.getBrewery(id).let { netModel ->
-            netRepoMapper.mapTo(netModel)
+        breweriesDbSource.getBrewery(id).let { dbModel ->
+            dbRepoMapper.mapTo(dbModel)
         }
 
     override suspend fun getAndSaveBreweries(page: Int, perPage: Int): List<BreweryRepoModel> {

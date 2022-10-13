@@ -34,4 +34,7 @@ dependencies {
     implementation 'org.kodein.di:kodein-di-generic-jvm:6.5.0'
     implementation 'org.kodein.di:kodein-di-framework-android-core:6.5.0'
     implementation 'org.kodein.di:kodein-di-framework-android-x:6.5.0'
+
+    implementation 'com.squareup.logcat:logcat:0.1'
+    implementation project(path: ':navigation')
 }

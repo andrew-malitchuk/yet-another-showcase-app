@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_activated="false">
+        <set>
+            <objectAnimator
+                android:duration="5000"
+                android:propertyName="background"
+                android:valueTo="#B3261E"
+                android:valueType="colorType" />
+<!--            <objectAnimator-->
+<!--                android:duration="@android:integer/config_shortAnimTime"-->
+<!--                android:propertyName="textColor"-->
+<!--                android:valueTo="@color/md_theme_light_onError"-->
+<!--                android:valueType="colorType" />-->
+        </set>
+    </item>
+
+    <item android:state_activated="true">
+        <set>
+            <objectAnimator
+                android:duration="5000"
+                android:propertyName="background"
+                android:valueTo="#21005D"
+                android:valueType="colorType" />
+<!--            <objectAnimator-->
+<!--                android:duration="@android:integer/config_shortAnimTime"-->
+<!--                android:propertyName="textColor"-->
+<!--                android:valueTo="@color/md_theme_light_onError"-->
+<!--                android:valueType="colorType" />-->
+        </set>
+    </item>
+
+</selector>

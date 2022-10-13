@@ -1,10 +1,12 @@
 package io.yasa.list
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.yasa.di.kodeinViewModel
@@ -53,6 +55,11 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             rvItems.apply {
                 this.adapter = this@ListFragment.adapter
                 addItemDecoration(divider)
+                if (isPortrait(requireContext())) {
+                    layoutManager = LinearLayoutManager(requireContext())
+                } else {
+                    layoutManager = GridLayoutManager(requireContext(), 2)
+                }
                 GravitySnapHelper(Gravity.TOP).attachToRecyclerView(this)
             }
         }
@@ -64,6 +71,10 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             }
         }
 
+    }
+
+    fun isPortrait(context: Context): Boolean {
+        return context.resources.getBoolean(io.yasa.ui.R.bool.is_portrait)
     }
 
 }

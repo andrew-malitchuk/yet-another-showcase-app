@@ -53,33 +53,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue sollicitudin neque, id mattis orci hendrerit eu. Aliquam convallis dictum purus, ut aliquam est viverra sed. Etiam auctor sem metus, eu porta lectus ullamcorper nec. Suspendisse id nunc ut lacus suscipit porttitor. Pellentesque sed mauris lacus. In ut interdum justo. Integer venenatis viverra volutpat.
-
-Pellentesque placerat in neque viverra malesuada. Nullam tincidunt congue urna, luctus aliquam quam iaculis quis. Ut vitae leo vitae leo imperdiet cursus. Maecenas porttitor, sapien at convallis tristique, sem lorem euismod libero, eu pretium mauris lectus at risus. Nunc finibus ullamcorper purus quis malesuada. Curabitur aliquam pulvinar metus, a pulvinar orci pellentesque et. Cras et maximus velit. Curabitur pretium felis in vehicula elementum. Fusce vestibulum velit tincidunt, rutrum tellus ut, eleifend ligula. Cras mauris ante, rhoncus non commodo at, pellentesque ac nisl. Curabitur interdum metus sit amet justo elementum faucibus at rutrum leo. Donec at orci euismod, maximus eros sit amet, sodales sem.
-
-Praesent rhoncus in diam eu tempor. Ut lectus urna, porta nec egestas sit amet, consectetur sed lorem. Phasellus vitae dui efficitur, sodales nibh ac, pellentesque diam. Quisque ac dolor dui. Maecenas ultricies purus vitae nisl efficitur ultrices. Ut ornare, urna commodo faucibus tincidunt, arcu tortor sagittis lorem, sed faucibus turpis ante eu sem. Phasellus dictum hendrerit nisi, in placerat metus bibendum quis. Duis tincidunt eget libero vitae porttitor. Suspendisse eget nisl nec nisl feugiat pellentesque. Aenean eget viverra magna.
-
-Suspendisse volutpat cursus massa quis sagittis. Donec vehicula erat ante, vel malesuada nulla accumsan quis. Nullam vehicula sapien metus, nec semper massa malesuada in. Donec rutrum justo mauris, ac tincidunt nunc posuere in. Nunc euismod orci augue, nec vehicula urna porttitor a. Quisque egestas elementum orci ut pharetra. Praesent dui turpis, pellentesque non rhoncus eget, aliquet id nunc. Etiam scelerisque, dolor sit amet luctus tempus, nunc diam hendrerit est, a cursus leo arcu id augue.
-
-In elit augue, gravida id pharetra et, scelerisque eu sem. Fusce diam ante, fermentum at tincidunt nec, imperdiet quis leo. Duis eu enim consequat nisi aliquet commodo. Duis dignissim maximus nunc, suscipit dapibus nunc rhoncus ut. Sed vel lacus consectetur augue vehicula tincidunt quis non augue. Fusce nisi tortor, tincidunt a varius ut, mollis quis elit. Nulla dictum luctus sapien a facilisis. Integer dignissim lacus vitae risus porttitor molestie. Suspendisse posuere felis tempus porttitor tincidunt. Pellentesque placerat risus a suscipit rutrum. Maecenas orci est, rhoncus nec dolor in, suscipit ullamcorper tortor.
-
-Maecenas pellentesque erat in laoreet imperdiet. Cras ultrices viverra tempus. Duis nunc arcu, scelerisque a sodales ac, consequat vel odio. Vestibulum ac lectus sem. Pellentesque nec commodo metus, non tempor ipsum. Sed lobortis id mauris id mattis. Nam non ligula molestie, scelerisque massa nec, euismod sem. Fusce ac porta diam.
-
-Sed ullamcorper bibendum vulputate. Cras viverra commodo magna, et bibendum erat volutpat eget. Nunc a purus vulputate, fermentum nunc porttitor, commodo odio. Morbi id felis ut nunc euismod porttitor eget a nulla. Nunc sagittis fermentum lectus sed tincidunt. In hac habitasse platea dictumst. Vestibulum massa dui, fringilla id mi vitae, ultricies posuere enim. Sed a rhoncus risus. Suspendisse eget magna fermentum, mollis metus eu, bibendum ligula.
-
-Maecenas efficitur consequat nunc, volutpat commodo ex. Maecenas aliquam sem sed massa viverra molestie. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent auctor efficitur lacus a finibus. Duis tristique purus et tellus commodo dignissim. Vestibulum sollicitudin metus et quam varius vulputate id quis magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-
-Sed lobortis vestibulum congue. Nunc quam ligula, vestibulum at tellus vel, sodales vulputate est. Phasellus id hendrerit est. Proin placerat nisi eget odio cursus dignissim. Mauris quis posuere erat. Donec justo nisi, lobortis nec ligula nec, pulvinar luctus massa. Duis sit amet nisi elementum, porta elit nec, rhoncus risus. Nam nec sodales felis. Aenean non velit et velit tincidunt sollicitudin vitae in velit. Praesent quis nisl ex. Suspendisse potenti. Vestibulum vestibulum, lectus ac convallis euismod, felis nisi sagittis lorem, non pretium ligula felis vitae diam. Nulla ligula lorem, pulvinar et leo at, lobortis aliquam lectus.
-
-Vestibulum ac nibh eget ipsum laoreet tincidunt nec vel sem. Duis consequat lobortis neque, et eleifend mauris placerat nec. Fusce ornare sem quis eros aliquet, nec volutpat mauris suscipit. Ut eget tellus scelerisque ex pellentesque luctus. Integer a arcu eu erat suscipit ultrices nec non est. Proin a efficitur quam, sed vestibulum lectus. Integer sodales, ipsum at porta scelerisque, diam sem volutpat dolor, in bibendum est leo eget nunc. Mauris porttitor tortor dapibus ex varius, sit amet dapibus mi sollicitudin. Vivamus nunc ligula, bibendum volutpat nisi eu, mollis iaculis ex. Aliquam sit amet euismod risus. Cras rutrum imperdiet mi ac maximus. Morbi tristique, lectus auctor bibendum ullamcorper, diam ipsum vestibulum quam, sit amet laoreet dui dui et erat. Nulla ac tincidunt odio. Pellentesque efficitur purus diam, vel scelerisque dui luctus nec." />
-        </LinearLayout>
+            android:orientation="vertical"/>
     </androidx.core.widget.NestedScrollView>
 
 

@@ -26,19 +26,12 @@ class DetailsFragment : Fragment(R.layout.fragment_details), KodeinAware {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(viewBinding) {
-        }
-
         lifecycleScope.launch {
             viewModel.getBrewery(detailsFragmentArgs.id).let { breweryItem ->
                 with(viewBinding) {
                     ctlToolbar.title = breweryItem.name
                     ivLogo.load("https://loremflickr.com/320/240")
 
-//                    mtToolbar.apply {
-//                        title = breweryItem.name
-//
-//                    }
                 }
             }
         }

@@ -3,12 +3,15 @@ package io.yasa.main
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import io.yasa.main.databinding.ActivityMainBinding
 import io.yasa.navigation.NavigationFlow
 import io.yasa.navigation.Navigator
 import io.yasa.navigation.ToFlowNavigatable
+import io.yasa.platform.network.ConnectivityLiveData
 import io.yasa.ui.viewbinding.viewBinding
+import logcat.logcat
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
@@ -21,16 +24,41 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), ToFlowNavigatabl
 
     private val viewBinding by viewBinding(ActivityMainBinding::bind)
 
+    private val checkConnection by lazy { ConnectivityLiveData(application) }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         with(viewBinding) {
-            val navHostFragment = if(isPortrait(this@MainActivity)) {
+            val navHostFragment = if (isPortrait(this@MainActivity)) {
                 supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-            }else{
+            } else {
                 supportFragmentManager.findFragmentById(R.id.nav_details_fragment) as NavHostFragment
             }
             val navController = navHostFragment.navController
             navigator.navController = navController
+        }
+        checkConnection.observe(this) { isConnected ->
+            logcat { "isConnected: $isConnected" }
+
+            if (!isConnected) {
+                viewBinding.tvError?.apply {
+//                    isVisible = true
+                    isActivated = false
+                }
+            } else {
+                viewBinding.tvError?.apply {
+//                    lifecycleScope.launch(Dispatchers.Main) {
+//                        delay(3000)
+//                    isActivated = true
+//                        delay(3000)
+                        isVisible = false
+//                    }
+                }
+            }
+
+            viewBinding.tvError?.isVisible = !isConnected
+
         }
     }
 
@@ -45,7 +73,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), ToFlowNavigatabl
     }
 
     fun isPortrait(context: Context): Boolean {
-        return context.resources.getBoolean(R.bool.is_portrait)
+        return context.resources.getBoolean(io.yasa.ui.R.bool.is_portrait)
     }
 
 }
