@@ -46,6 +46,7 @@ dependencies {
     implementation project(path: ":domain")
     implementation project(path: ":navigation")
     implementation project(path: ":models")
+    implementation project(path: ":localization")
 
     implementation 'androidx.navigation:navigation-fragment:2.5.2'
     implementation 'androidx.navigation:navigation-ui:2.5.2'

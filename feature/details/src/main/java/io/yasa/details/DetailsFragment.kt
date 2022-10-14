@@ -1,9 +1,13 @@
 package io.yasa.details
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import io.yasa.details.databinding.FragmentDetailsBinding
@@ -30,11 +34,44 @@ class DetailsFragment : Fragment(R.layout.fragment_details), KodeinAware {
             viewModel.getBrewery(detailsFragmentArgs.id).let { breweryItem ->
                 with(viewBinding) {
                     ctlToolbar.title = breweryItem.name
+                    if (isPortrait(requireContext())) {
+                        mtToolbar.apply {
+                            navigationIcon = ContextCompat.getDrawable(
+                                context,
+                                io.yasa.ui.R.drawable.ic_baseline_arrow_back_24
+                            )
+                            setNavigationIconTint(
+                                ContextCompat.getColor(
+                                    context,
+                                    io.yasa.ui.R.color.md_theme_light_surface
+                                )
+                            )
+                            this.setOnClickListener {
+                                findNavController().popBackStack()
+                            }
+                        }
+                    }else{
+                        mtToolbar.navigationIcon=null
+                    }
                     ivLogo.load("https://loremflickr.com/320/240")
-
+                    tvName.text = breweryItem.name
+                    tvAddress.text = breweryItem.fullAddress
+                    tvType.text = breweryItem.breweryType
+                    tvPhone.text = breweryItem.phone
+                    breweryItem.websiteUrl?.let {
+                        tvWebsite.apply {
+                            isVisible = true
+                            text = it
+                        }
+                        tvWebsiteField.isVisible = true
+                    }
                 }
             }
         }
+    }
+
+    fun isPortrait(context: Context): Boolean {
+        return context.resources.getBoolean(io.yasa.ui.R.bool.is_portrait)
     }
 
 }
