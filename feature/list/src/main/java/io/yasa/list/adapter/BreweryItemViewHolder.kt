@@ -8,15 +8,14 @@ import io.yasa.list.databinding.ItemBreweryBinding
 import io.yasa.models.data.model.BreweryUiModel
 
 class BreweryItemViewHolder(
-    private val viewBinding: ItemBreweryBinding,
-    var onClick: ((item: BreweryUiModel) -> Unit)? = null
+    private val viewBinding: ItemBreweryBinding
 ) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    fun bind(item: BreweryUiModel) {
+    fun bind(item: BreweryUiModel, onClick: ((item: BreweryUiModel) -> Unit)? = null) {
         with(viewBinding) {
             tvTitle.text = item.name
             tvDescription.text = item.fullAddress
-            ivLogo.load("https://loremflickr.com/320/240"){
+            ivLogo.load("https://loremflickr.com/320/240") {
                 transformations(CircleCropTransformation())
             }
             root.setOnClickListener {

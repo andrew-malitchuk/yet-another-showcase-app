@@ -35,15 +35,19 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = BreweryAdapter(requireContext()) { uiModel ->
-            uiModel.id?.let {
-                (requireActivity() as? ToFlowNavigatable)?.navigateToFlow(
-                    NavigationFlow.DetailsFlow(
-                        it
+        adapter = BreweryAdapter(
+            requireContext(),
+            isInPortrait = isPortrait(requireContext()),
+            onClick = { uiModel ->
+                uiModel.id?.let {
+                    (requireActivity() as? ToFlowNavigatable)?.navigateToFlow(
+                        NavigationFlow.DetailsFlow(
+                            it
+                        )
                     )
-                )
+                }
             }
-        }
+        )
         with(viewBinding) {
             val divider = MaterialDividerItemDecoration(
                 requireContext(),
@@ -55,10 +59,10 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             rvItems.apply {
                 this.adapter = this@ListFragment.adapter
                 addItemDecoration(divider)
-                if (isPortrait(requireContext())) {
-                    layoutManager = LinearLayoutManager(requireContext())
+                layoutManager = if (isPortrait(requireContext())) {
+                    LinearLayoutManager(requireContext())
                 } else {
-                    layoutManager = GridLayoutManager(requireContext(), 2)
+                    GridLayoutManager(requireContext(), 2)
                 }
                 GravitySnapHelper(Gravity.TOP).attachToRecyclerView(this)
             }
