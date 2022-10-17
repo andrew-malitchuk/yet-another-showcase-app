@@ -69,5 +69,17 @@ class BreweriesRepositoryImpl(
         }
     }
 
-
+    override suspend fun search(query: String) : List<BreweryRepoModel> {
+     return  breweriesNetSource.search(query).let { netList ->
+            netList.map { netModel ->
+                netDbMapper.mapTo(netModel)
+            }
+        }.also { dbList ->
+//            breweriesDbSource.addOrReplace(dbList)
+        }.let { netList ->
+            netList.map { netModel ->
+                dbRepoMapper.mapTo(netModel)
+            }
+        }
+    }
 }

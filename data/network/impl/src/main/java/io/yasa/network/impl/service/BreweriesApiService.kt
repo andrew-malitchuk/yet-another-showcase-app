@@ -18,4 +18,7 @@ interface BreweriesApiService {
         @Query("perPage") perPage: Int
     ): List<BreweryNetModel>
 
+    @GET("https://api.openbrewerydb.org/breweries/search")
+    suspend fun search(@Query("query") query: String): List<BreweryNetModel>
+
 }

@@ -138,4 +138,5 @@
     <!-- Tooltips -->
 
     <dimen name="image_size">64dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
 </resources>

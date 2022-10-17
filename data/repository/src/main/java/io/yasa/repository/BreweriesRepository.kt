@@ -9,4 +9,5 @@ interface BreweriesRepository {
     suspend fun getBreweries(page: Int, perPage: Int):List<BreweryRepoModel>
     suspend fun refreshBreweries(page:Int, perPage:Int)
     fun observeBreweriesChanges(): Flow<List<BreweryRepoModel>>
+    suspend fun search(query:String): List<BreweryRepoModel>
 }

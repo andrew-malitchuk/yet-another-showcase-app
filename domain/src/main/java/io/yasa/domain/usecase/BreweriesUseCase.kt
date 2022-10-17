@@ -41,6 +41,12 @@ class BreweriesUseCase(
         breweriesRepository.refreshBreweries(page, PER_PAGE_ITEMS)
     }
 
+    suspend fun search(query: String): List<BreweryDomainModel> {
+        return breweriesRepository.search(query).map { repoModel ->
+            repoDomainMapper.mapTo(repoModel)
+        }
+    }
+
     companion object {
         const val PER_PAGE_ITEMS = 10
     }

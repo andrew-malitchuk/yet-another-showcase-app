@@ -5,4 +5,8 @@
     <string name="address" tools:ignore="ExtraTranslation">Address:</string>
     <string name="phone" tools:ignore="ExtraTranslation">Phone:</string>
     <string name="website" tools:ignore="ExtraTranslation">Website:</string>
+    <string name="search" tools:ignore="ExtraTranslation">Search</string>
+    <string name="sort_name" tools:ignore="ExtraTranslation">Name</string>
+    <string name="sort_type" tools:ignore="ExtraTranslation">Type</string>
+    <string name="sort_date" tools:ignore="ExtraTranslation">Date</string>
 </resources>
