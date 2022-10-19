@@ -25,9 +25,9 @@ class BreweriesRemoteDataSourceImp(
             config = PagingConfig(
                 10
             ),
-            remoteMediator = BreweriesMediator(
-                breweriesRepository
-            )
+//            remoteMediator = BreweriesMediator(
+//                breweriesRepository
+//            )
         ).flow
     }
 

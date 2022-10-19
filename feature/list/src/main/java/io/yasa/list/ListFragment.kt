@@ -105,7 +105,10 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                 }
             }
 
-            srlRefresh.setOnRefreshListener { adapter?.refresh() }
+            srlRefresh.setOnRefreshListener {
+                adapter?.refresh()
+                viewBinding.rvItems.isNestedScrollingEnabled=false
+            }
             btnRetry.setOnClickListener { adapter?.refresh() }
 
             with(viewModel) {
@@ -132,6 +135,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                 logcat { pagingData.toString() }
                 adapter?.submitData(pagingData)
                 viewBinding.srlRefresh.isRefreshing = false
+                viewBinding.rvItems.isNestedScrollingEnabled=true
             }
         }
 
