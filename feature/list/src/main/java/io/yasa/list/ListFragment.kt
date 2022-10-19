@@ -14,6 +14,7 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,7 @@ import io.yasa.navigation.ToFlowNavigatable
 import io.yasa.ui.viewbinding.edittext.debounce
 import io.yasa.ui.viewbinding.snap.GravitySnapHelper
 import io.yasa.ui.viewbinding.viewBinding
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import logcat.logcat
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
@@ -103,9 +105,8 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                 }
             }
 
-            srlRefresh.setOnRefreshListener {
-                adapter?.refresh()
-            }
+            srlRefresh.setOnRefreshListener { adapter?.refresh() }
+            btnRetry.setOnClickListener { adapter?.refresh() }
 
             with(viewModel) {
                 lifecycleScope.launchWhenStarted {
@@ -134,6 +135,31 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             }
         }
 
+        lifecycleScope.launch {
+            adapter?.loadStateFlow?.collectLatest { loadStates ->
+                logcat("loadStates") { "${loadStates.refresh}" }
+                with(viewBinding) {
+
+                    if (loadStates.source.refresh is LoadState.NotLoading && loadStates.append.endOfPaginationReached && (adapter?.itemCount
+                            ?: 0) < 1
+                    ) {
+                        //empty
+                        rvItems.isVisible = false
+                        tvNoData.isVisible = true
+
+                    } else {
+                        // default
+                        tvNoData.isVisible = false
+
+                        pbLoading.isVisible = loadStates.refresh is LoadState.Loading
+                        rvItems.isVisible = loadStates.refresh !is LoadState.Error
+                        llError.isVisible = loadStates.refresh is LoadState.Error
+                    }
+
+
+                }
+            }
+        }
     }
 
     private fun addSearchTag(query: String?) {

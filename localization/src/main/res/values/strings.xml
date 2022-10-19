@@ -9,4 +9,7 @@
     <string name="sort_name" tools:ignore="ExtraTranslation">Name</string>
     <string name="sort_type" tools:ignore="ExtraTranslation">Type</string>
     <string name="sort_date" tools:ignore="ExtraTranslation">Date</string>
+    <string name="no_data">No data</string>
+    <string name="retry">Retry</string>
+    <string name="error">Error</string>
 </resources>
