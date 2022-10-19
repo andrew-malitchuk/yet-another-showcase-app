@@ -22,6 +22,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.yasa.di.kodeinViewModel
 import io.yasa.list.adapter.BreweryAdapter
+import io.yasa.list.adapter.loadstate.BreweryLoadStateAdapter
 import io.yasa.list.databinding.FragmentListBinding
 import io.yasa.navigation.NavigationFlow
 import io.yasa.navigation.ToFlowNavigatable
@@ -71,13 +72,17 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             }
 
             rvItems.apply {
-                this.adapter = this@ListFragment.adapter
                 addItemDecoration(divider)
                 layoutManager = if (isPortrait(requireContext())) {
                     LinearLayoutManager(requireContext())
                 } else {
                     GridLayoutManager(requireContext(), 2)
                 }
+                adapter = this@ListFragment.adapter?.withLoadStateFooter(
+                    footer = BreweryLoadStateAdapter(requireContext()){
+                        this@ListFragment.adapter?.retry()
+                    }
+                )
                 GravitySnapHelper(Gravity.TOP).attachToRecyclerView(this)
             }
 
@@ -107,7 +112,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
 
             srlRefresh.setOnRefreshListener {
                 adapter?.refresh()
-                viewBinding.rvItems.isNestedScrollingEnabled=false
+                viewBinding.rvItems.isNestedScrollingEnabled = false
             }
             btnRetry.setOnClickListener { adapter?.refresh() }
 
@@ -135,7 +140,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                 logcat { pagingData.toString() }
                 adapter?.submitData(pagingData)
                 viewBinding.srlRefresh.isRefreshing = false
-                viewBinding.rvItems.isNestedScrollingEnabled=true
+                viewBinding.rvItems.isNestedScrollingEnabled = true
             }
         }
 
@@ -155,7 +160,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                         // default
                         tvNoData.isVisible = false
 
-                        pbLoading.isVisible = loadStates.refresh is LoadState.Loading
+                        cpbiProgress.isVisible = loadStates.refresh is LoadState.Loading
                         rvItems.isVisible = loadStates.refresh !is LoadState.Error
                         llError.isVisible = loadStates.refresh is LoadState.Error
                     }

@@ -198,14 +198,14 @@
                     tools:listitem="@layout/item_brewery" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-            <ProgressBar
-                android:id="@+id/pb_loading"
-                style="?android:attr/progressBarStyle"
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/cpbi_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:indeterminate="true"
                 android:layout_gravity="center"
                 android:visibility="gone"
-                tools:visibility="visible" />
+                tools:visibility="visible"/>
 
             <TextView
                 android:id="@+id/tv_no_data"
@@ -231,10 +231,14 @@
 
                 <Button
                     android:id="@+id/btn_retry"
-                    android:layout_width="match_parent"
+                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/retry" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/retry"
+                    app:icon="@drawable/ic_baseline_highlight_off_24"/>
 
             </LinearLayout>
 
