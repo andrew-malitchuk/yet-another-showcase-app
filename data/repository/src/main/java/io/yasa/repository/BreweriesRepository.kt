@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface BreweriesRepository {
     suspend fun getBrewery(id:String):BreweryRepoModel
     suspend fun getAndSaveBreweries(page: Int, perPage: Int):List<BreweryRepoModel>
+    suspend fun getAndSaveBreweries(page: Int, perPage: Int,sort:String?=null):List<BreweryRepoModel>
     suspend fun getBreweries(page: Int, perPage: Int):List<BreweryRepoModel>
     suspend fun refreshBreweries(page:Int, perPage:Int)
     fun observeBreweriesChanges(): Flow<List<BreweryRepoModel>>

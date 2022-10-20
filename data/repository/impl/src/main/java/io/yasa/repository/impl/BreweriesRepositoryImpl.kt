@@ -41,6 +41,25 @@ class BreweriesRepositoryImpl(
         }
     }
 
+    override suspend fun getAndSaveBreweries(page: Int, perPage: Int, sort:String?): List<BreweryRepoModel> {
+//        return breweriesNetSource.getBreweries(page, perPage).let { netList ->
+        return breweriesNetSource.getBreweries(page, perPage,sort).let { netList ->
+            netList.map { netModel ->
+                netDbMapper.mapTo(netModel)
+            }
+        }.also { dbList ->
+            if (page == 1) {
+                breweriesDbSource.replaceAll(dbList)
+            } else {
+                breweriesDbSource.addOrReplace(dbList)
+            }
+        }.let { netList ->
+            netList.map { netModel ->
+                dbRepoMapper.mapTo(netModel)
+            }
+        }
+    }
+
     override suspend fun getBreweries(page: Int, perPage: Int): List<BreweryRepoModel> {
         return breweriesDbSource.getBreweries(page, perPage).map { dbModel ->
             dbRepoMapper.mapTo(dbModel)

@@ -15,7 +15,8 @@ interface BreweriesApiService {
     @GET("https://api.openbrewerydb.org/breweries")
     suspend fun getBreweries(
         @Query("page") page: Int,
-        @Query("perPage") perPage: Int
+        @Query("perPage") perPage: Int,
+        @Query("sort") sort: String? = null,
     ): List<BreweryNetModel>
 
     @GET("https://api.openbrewerydb.org/breweries/search")

@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/md_theme_dark_onPrimaryContainer"
+            android:background="@color/md_theme_dark_surfaceTint"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="horizontal"

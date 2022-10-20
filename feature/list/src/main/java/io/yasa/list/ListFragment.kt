@@ -3,7 +3,6 @@ package io.yasa.list
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.yasa.di.kodeinViewModel
 import io.yasa.list.adapter.BreweryAdapter
@@ -79,7 +78,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                     GridLayoutManager(requireContext(), 2)
                 }
                 adapter = this@ListFragment.adapter?.withLoadStateFooter(
-                    footer = BreweryLoadStateAdapter(requireContext()){
+                    footer = BreweryLoadStateAdapter(requireContext()) {
                         this@ListFragment.adapter?.retry()
                     }
                 )
@@ -89,9 +88,44 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             mbtgFeatures.addOnButtonCheckedListener { group, checkedId, isChecked ->
                 if (checkedId == btnSort.id) {
                     llSort.isVisible = isChecked
+
+                    if (!isChecked) {
+                        // Clear tags
+                        addSortTag(null)
+                    } else {
+                        // Fulfill sort
+                        viewModel.sort()
+                    }
+
                 }
                 if (checkedId == btnFilter.id) {
                     llSort.isVisible = isChecked
+                }
+            }
+
+            mbtgSortField.addOnButtonCheckedListener { group, checkedId, isChecked ->
+                when (checkedId) {
+                    btnName.id -> {
+                        viewModel.sort(field = ListViewModel.SortField.NAME)
+                    }
+                    btnType.id -> {
+                        viewModel.sort(field = ListViewModel.SortField.TYPE)
+                    }
+                    btnDate.id -> {
+                        viewModel.sort(field = ListViewModel.SortField.DATE)
+                    }
+                }
+
+            }
+
+            mbtgSortOrder.addOnButtonCheckedListener { group, checkedId, isChecked ->
+                when (checkedId) {
+                    btnAsc.id -> {
+                        viewModel.sort(order = ListViewModel.Order.ASC)
+                    }
+                    btnDesc.id -> {
+                        viewModel.sort(order = ListViewModel.Order.DESC)
+                    }
                 }
             }
 
@@ -122,6 +156,13 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                         uiList?.let {
                             adapter?.submitData(PagingData.from(it))
                         }
+                    }
+                }
+                lifecycleScope.launch {
+                    sortFlow.collect {
+                        logcat("sortFlow") { "$it" }
+                        addSortTag(it)
+                        adapter?.refresh()
                     }
                 }
             }
@@ -172,7 +213,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
     }
 
     private fun addSearchTag(query: String?) {
-        if (query == null) {
+        if (query.isNullOrEmpty()) {
             with(viewBinding) {
                 clTags.children.filter { it != clFlow && it.tag == "query" }.forEach {
                     clTags.removeView(it)
@@ -180,13 +221,12 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             }
             return
         }
-        val tag =
-            MaterialButton(ContextThemeWrapper(requireContext(), io.yasa.ui.R.style.Tag)).apply {
-                id = View.generateViewId()
-                text = "Search: $query"
-                tag = "query"
-                layoutParams = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-            }
+        val tag = Chip(context).apply {
+            id = View.generateViewId()
+            text = "Search: $query"
+            tag = "query"
+            layoutParams = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+        }
         with(viewBinding) {
             val isSearchTagPresent = clTags.children.any { v ->
                 v.tag == "query"
@@ -199,7 +239,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
         }
     }
 
-    private fun addSortTag(sort: Pair<String, String>? = null) {
+    private fun addSortTag(sort: Pair<ListViewModel.SortField, ListViewModel.Order>? = null) {
         if (sort == null) {
             with(viewBinding) {
                 clTags.children.filter { it != clFlow && it.tag == "sort" }.forEach {
@@ -209,10 +249,10 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             return
         }
         val tag =
-            MaterialButton(ContextThemeWrapper(requireContext(), io.yasa.ui.R.style.Tag)).apply {
+            Chip(context).apply {
                 id = View.generateViewId()
-                text = "Search: $sort"
-                tag = "query"
+                text = "Sort: ${sort.first} (${sort.second})"
+                tag = "sort"
                 layoutParams = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
             }
         with(viewBinding) {

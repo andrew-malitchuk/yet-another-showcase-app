@@ -3,7 +3,6 @@ package io.yasa.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import androidx.paging.map
 import io.yasa.domain.datasource.BreweriesRemoteDataSource
 import io.yasa.domain.usecase.BreweriesUseCase
@@ -12,6 +11,7 @@ import io.yasa.models.data.model.BreweryUiModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import logcat.logcat
 
 class ListViewModel(
     private val breweriesUseCase: BreweriesUseCase,
@@ -22,6 +22,14 @@ class ListViewModel(
 
     private val _searchFlow: MutableStateFlow<List<BreweryUiModel>?> = MutableStateFlow(null)
     val searchFlow = _searchFlow.asStateFlow()
+
+    private val _sortFlowQeaury: MutableStateFlow<Pair<SortField, Order>?> = MutableStateFlow(
+        Pair(
+            SortField.NAME, Order.ASC
+        )
+    )
+    val sortFlow = _sortFlowQeaury.asStateFlow()
+
 
     val breweriesStateFlow: Flow<List<BreweryUiModel>> =
         breweriesUseCase.breweriesStateFlow.map { domainList ->
@@ -47,12 +55,14 @@ class ListViewModel(
     }
 
     fun getBreweries(): Flow<PagingData<BreweryUiModel>> {
-        return breweriesRemoteDataSource.getBreweries()
+//        return breweriesRemoteDataSource.getBreweries()
+        logcat("_sortFlowQeaury") { "${_sortFlowQeaury.value}" }
+        return breweriesRemoteDataSource.getBreweries(_sortFlowQeaury.value?.toQuery())
             .map { pagingData ->
                 pagingData.map { domainModel ->
                     uiMapper.mapTo(domainModel)
                 }
-            }.cachedIn(viewModelScope).flowOn(Dispatchers.IO)
+            }/*.cachedIn(viewModelScope)*/.flowOn(Dispatchers.IO)
     }
 
     fun search(query: String) {
@@ -64,6 +74,36 @@ class ListViewModel(
                 searchResult
             }
         }
+    }
+
+    fun sort(field: SortField? = null, order: Order? = null) {
+        var previousValue = _sortFlowQeaury.value
+        field?.let {
+            previousValue = previousValue?.copy(first = it)
+        }
+        order?.let {
+            previousValue = previousValue?.copy(second = it)
+        }
+        logcat("sort") { "${previousValue?.first} | ${previousValue?.second}" }
+
+        this.getBreweries()
+
+        _sortFlowQeaury.update {
+            previousValue
+        }
+    }
+
+
+    enum class SortField {
+        NAME, TYPE, DATE, NI
+    }
+
+    enum class Order {
+        ASC, DESC, NI
+    }
+
+    fun Pair<SortField, Order>.toQuery(): String {
+        return "${this.first}:${this.second}"
     }
 
 }

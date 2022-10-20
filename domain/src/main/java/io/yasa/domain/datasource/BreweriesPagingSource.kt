@@ -10,6 +10,7 @@ private const val FIRST_PAGE = 1;
 
 class BreweriesPagingSource(
     private val useCase: BreweriesUseCase,
+    private val sort: String? = null
 ) : PagingSource<Int, BreweryDomainModel>() {
 
     override fun getRefreshKey(state: PagingState<Int, BreweryDomainModel>): Int? {
@@ -26,8 +27,9 @@ class BreweriesPagingSource(
         return try {
             val page = params.key ?: FIRST_PAGE
 //            val response = useCase.getBreweries(page)
-            val response = useCase.getAndSaveBreweries(page)
-            logcat{response.toString()}
+//            val response = useCase.getAndSaveBreweries(page)
+            val response = useCase.getAndSaveBreweries(page,sort)
+            logcat { response.toString() }
             LoadResult.Page(
                 data = response,
                 prevKey = if (page == FIRST_PAGE) null else page - 1,
