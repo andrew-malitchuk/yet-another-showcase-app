@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
+import io.yasa.list.adapter.BreweryAdapter.On
 import io.yasa.list.databinding.ItemBreweryBinding
 import io.yasa.models.data.model.BreweryUiModel
 
@@ -20,7 +21,7 @@ class BreweryAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreweryItemViewHolder {
         return BreweryItemViewHolder(
             ItemBreweryBinding.inflate(
-                LayoutInflater.from(context),
+                LayoutInflater.from(parent.context),
                 parent,
                 false
             ),
@@ -30,8 +31,9 @@ class BreweryAdapter(
     override fun onBindViewHolder(holder: BreweryItemViewHolder, position: Int) {
         getItem(position)?.let {
             holder.bind(it) {
+                notifyItemChanged(focusedItem)
+                notifyItemChanged(position)
                 focusedItem = position
-                notifyDataSetChanged()
                 onClick?.invoke(it)
             }
         }
@@ -42,6 +44,10 @@ class BreweryAdapter(
                 holder.itemView.setBackgroundColor(Color.WHITE)
             }
         }
-    }
 
+        val on = On {  }
+    }
+    fun interface On {
+        fun onBreweryItemClick()
+    }
 }

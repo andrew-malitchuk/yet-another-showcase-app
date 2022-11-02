@@ -1,6 +1,5 @@
 package io.yasa.list
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
@@ -11,6 +10,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.children
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -20,15 +20,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import io.yasa.di.kodeinViewModel
+import io.yasa.list.ListViewModel.Order
+import io.yasa.list.ListViewModel.SortField
 import io.yasa.list.adapter.BreweryAdapter
 import io.yasa.list.adapter.loadstate.BreweryLoadStateAdapter
 import io.yasa.list.databinding.FragmentListBinding
 import io.yasa.navigation.NavigationFlow
 import io.yasa.navigation.ToFlowNavigatable
-import io.yasa.ui.viewbinding.edittext.debounce
+import io.yasa.ui.viewbinding.ext.isPortrait
+import io.yasa.ui.viewbinding.ext.isTablet
 import io.yasa.ui.viewbinding.snap.GravitySnapHelper
 import io.yasa.ui.viewbinding.viewBinding
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import logcat.logcat
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
@@ -51,7 +54,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
         super.onViewCreated(view, savedInstanceState)
         adapter = BreweryAdapter(
             requireContext(),
-            isInPortrait = isPortrait(requireContext()),
+            isInPortrait = requireContext().isPortrait(),
             onClick = { uiModel ->
                 uiModel.id?.let {
                     (requireActivity() as? ToFlowNavigatable)?.navigateToFlow(
@@ -72,10 +75,14 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
 
             rvItems.apply {
                 addItemDecoration(divider)
-                layoutManager = if (isPortrait(requireContext())) {
+                layoutManager = if (requireContext().isPortrait()) {
                     LinearLayoutManager(requireContext())
                 } else {
-                    GridLayoutManager(requireContext(), 2)
+                    if (requireContext().isTablet()) {
+                        GridLayoutManager(requireContext(), 3)
+                    } else {
+                        GridLayoutManager(requireContext(), 2)
+                    }
                 }
                 adapter = this@ListFragment.adapter?.withLoadStateFooter(
                     footer = BreweryLoadStateAdapter(requireContext()) {
@@ -85,7 +92,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                 GravitySnapHelper(Gravity.TOP).attachToRecyclerView(this)
             }
 
-            mbtgFeatures.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            mbtgFeatures.addOnButtonCheckedListener { _, checkedId, isChecked ->
                 if (checkedId == btnSort.id) {
                     llSort.isVisible = isChecked
 
@@ -103,16 +110,19 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                 }
             }
 
-            mbtgSortField.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            mbtgSortField.addOnButtonCheckedListener { _, checkedId, isChecked ->
                 when (checkedId) {
                     btnName.id -> {
-                        viewModel.sort(field = ListViewModel.SortField.NAME)
+                        if (isChecked)
+                            viewModel.sort(field = SortField.NAME)
                     }
                     btnType.id -> {
-                        viewModel.sort(field = ListViewModel.SortField.TYPE)
+                        if (isChecked)
+                            viewModel.sort(field = SortField.TYPE)
                     }
                     btnDate.id -> {
-                        viewModel.sort(field = ListViewModel.SortField.DATE)
+                        if (isChecked)
+                            viewModel.sort(field = SortField.DATE)
                     }
                 }
 
@@ -121,10 +131,12 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             mbtgSortOrder.addOnButtonCheckedListener { group, checkedId, isChecked ->
                 when (checkedId) {
                     btnAsc.id -> {
-                        viewModel.sort(order = ListViewModel.Order.ASC)
+                        if (isChecked)
+                            viewModel.sort(order = Order.ASC)
                     }
                     btnDesc.id -> {
-                        viewModel.sort(order = ListViewModel.Order.DESC)
+                        if (isChecked)
+                            viewModel.sort(order = Order.DESC)
                     }
                 }
             }
@@ -132,13 +144,13 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
 
             textField.setEndIconOnClickListener {
                 tietInput.setText("")
-                adapter?.refresh()
+                viewModel.clearSearch()
                 addSearchTag(null)
             }
 
-            tietInput.debounce(500L) {
-                Toast.makeText(context, it ?: "", Toast.LENGTH_SHORT).show()
+            tietInput.doAfterTextChanged {
                 if (!it.isNullOrEmpty()) {
+                    Toast.makeText(context, it ?: "", Toast.LENGTH_SHORT).show()
                     viewModel.search(it.toString())
                     addSearchTag(it.toString())
                 }
@@ -150,11 +162,34 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             }
             btnRetry.setOnClickListener { adapter?.refresh() }
 
+
+            lifecycleScope.launch {
+                viewModel.getBreweries().collect { pagingData ->
+                    logcat { pagingData.toString() }
+                    adapter?.submitData(pagingData)
+                    viewBinding.srlRefresh.isRefreshing = false
+                    viewBinding.rvItems.isNestedScrollingEnabled = true
+                }
+            }
+
             with(viewModel) {
-                lifecycleScope.launchWhenStarted {
+                lifecycleScope.launch {
                     searchFlow.collect { uiList ->
-                        uiList?.let {
-                            adapter?.submitData(PagingData.from(it))
+                        if (uiList.isNullOrEmpty()) {
+                            uiList?.toString()
+                            adapter?.apply {
+                                refresh()
+                            }
+
+                        } else {
+                            uiList?.let {
+                                with(viewBinding) {
+                                    adapter?.apply {
+                                        submitData(PagingData.from(it))
+                                    }
+                                    viewBinding.rvItems.smoothScrollToPosition(0)
+                                }
+                            }
                         }
                     }
                 }
@@ -176,14 +211,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             }
         }
 
-        lifecycleScope.launch {
-            viewModel.getBreweries().collect { pagingData ->
-                logcat { pagingData.toString() }
-                adapter?.submitData(pagingData)
-                viewBinding.srlRefresh.isRefreshing = false
-                viewBinding.rvItems.isNestedScrollingEnabled = true
-            }
-        }
+
 
         lifecycleScope.launch {
             adapter?.loadStateFlow?.collectLatest { loadStates ->
@@ -239,7 +267,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
         }
     }
 
-    private fun addSortTag(sort: Pair<ListViewModel.SortField, ListViewModel.Order>? = null) {
+    private fun addSortTag(sort: Pair<SortField, Order>? = null) {
         if (sort == null) {
             with(viewBinding) {
                 clTags.children.filter { it != clFlow && it.tag == "sort" }.forEach {
@@ -265,10 +293,6 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             }
             clTags.addView(tag)
         }
-    }
-
-    private fun isPortrait(context: Context): Boolean {
-        return context.resources.getBoolean(io.yasa.ui.R.bool.is_portrait)
     }
 
 }

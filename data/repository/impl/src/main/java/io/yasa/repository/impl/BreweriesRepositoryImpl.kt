@@ -24,11 +24,10 @@ class BreweriesRepositoryImpl(
         }
 
     override suspend fun getAndSaveBreweries(page: Int, perPage: Int): List<BreweryRepoModel> {
-        return breweriesNetSource.getBreweries(page, perPage).let { netList ->
-            netList.map { netModel ->
-                netDbMapper.mapTo(netModel)
-            }
-        }.also { dbList ->
+        return breweriesNetSource
+            .getBreweries(page, perPage)
+            .map(netDbMapper::mapTo)
+        .also { dbList ->
             if (page == 1) {
                 breweriesDbSource.replaceAll(dbList)
             } else {

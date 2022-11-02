@@ -9,6 +9,8 @@ import io.yasa.domain.usecase.BreweriesUseCase
 import io.yasa.models.data.mapper.BreweryDomainUiMapper
 import io.yasa.models.data.model.BreweryUiModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import logcat.logcat
@@ -29,6 +31,7 @@ class ListViewModel(
         )
     )
     val sortFlow = _sortFlowQeaury.asStateFlow()
+    var sortQuery: String? = _sortFlowQeaury.value?.toQuery()
 
 
     val breweriesStateFlow: Flow<List<BreweryUiModel>> =
@@ -55,25 +58,41 @@ class ListViewModel(
     }
 
     fun getBreweries(): Flow<PagingData<BreweryUiModel>> {
-//        return breweriesRemoteDataSource.getBreweries()
         logcat("_sortFlowQeaury") { "${_sortFlowQeaury.value}" }
         return breweriesRemoteDataSource.getBreweries(_sortFlowQeaury.value?.toQuery())
             .map { pagingData ->
                 pagingData.map { domainModel ->
                     uiMapper.mapTo(domainModel)
                 }
-            }/*.cachedIn(viewModelScope)*/.flowOn(Dispatchers.IO)
+            }.flowOn(Dispatchers.IO)
     }
 
+
+    private var searchJob: Job? = null
     fun search(query: String) {
-        viewModelScope.launch {
-            val searchResult = breweriesUseCase.search(query).map { domainModule ->
-                uiMapper.mapTo(domainModule)
-            }
-            _searchFlow.update {
-                searchResult
+        searchJob?.cancel()
+        searchJob=viewModelScope.launch {
+            delay(500)
+            if(query.isNotEmpty()) {
+                val searchResult = breweriesUseCase.search(query).map { domainModule ->
+                    uiMapper.mapTo(domainModule)
+                }
+                _searchFlow.update {
+                    searchResult
+                }
+            }else{
+                getBreweries()
             }
         }
+    }
+
+    fun clearSearch(){
+        viewModelScope.launch {
+            _searchFlow.update {
+                null
+            }
+        }
+
     }
 
     fun sort(field: SortField? = null, order: Order? = null) {
@@ -86,11 +105,12 @@ class ListViewModel(
         }
         logcat("sort") { "${previousValue?.first} | ${previousValue?.second}" }
 
-        this.getBreweries()
 
-        _sortFlowQeaury.update {
-            previousValue
-        }
+        sortQuery = previousValue?.toQuery()
+
+        _sortFlowQeaury.compareAndSet(_sortFlowQeaury.value, previousValue)
+
+        this.getBreweries()
     }
 
 

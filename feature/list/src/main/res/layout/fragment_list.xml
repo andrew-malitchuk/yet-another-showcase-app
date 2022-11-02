@@ -159,7 +159,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_tags"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/material_layout_keylines_screen_edge_margin">
 
             <androidx.constraintlayout.helper.widget.Flow
                 android:id="@+id/cl_flow"

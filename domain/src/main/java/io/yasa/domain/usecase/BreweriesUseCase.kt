@@ -25,9 +25,7 @@ class BreweriesUseCase(
         }
     }
 
-    //    suspend fun getAndSaveBreweries(page: Int): List<BreweryDomainModel> {
-    suspend fun getAndSaveBreweries(page: Int, sort: String? = null): List<BreweryDomainModel> {
-//        return breweriesRepository.getAndSaveBreweries(page, PER_PAGE_ITEMS).map { repoModel ->
+    suspend fun getAndSaveBreweries(page: Int, sort: String? = null,): List<BreweryDomainModel> {
         return breweriesRepository.getAndSaveBreweries(page, PER_PAGE_ITEMS, sort)
             .map { repoModel ->
                 repoDomainMapper.mapTo(repoModel)
