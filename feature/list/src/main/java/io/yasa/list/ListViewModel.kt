@@ -2,6 +2,7 @@ package io.yasa.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import androidx.paging.map
 import io.yasa.domain.datasource.BreweriesRemoteDataSource
 import io.yasa.domain.usecase.BreweriesUseCase
@@ -139,7 +140,7 @@ class ListViewModel(
                 pagingData.map { domainModel ->
                     uiMapper.mapTo(domainModel)
                 }
-            }.flowOn(Dispatchers.IO)
+            }.cachedIn(viewModelScope)
     }
     //
 
