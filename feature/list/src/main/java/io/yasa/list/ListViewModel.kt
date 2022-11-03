@@ -2,7 +2,6 @@ package io.yasa.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.map
 import io.yasa.domain.datasource.BreweriesRemoteDataSource
 import io.yasa.domain.usecase.BreweriesUseCase
@@ -57,36 +56,36 @@ class ListViewModel(
         breweriesUseCase.refreshBreweries(1)
     }
 
-    fun getBreweries(): Flow<PagingData<BreweryUiModel>> {
-        logcat("_sortFlowQeaury") { "${_sortFlowQeaury.value}" }
-        return breweriesRemoteDataSource.getBreweries(_sortFlowQeaury.value?.toQuery())
-            .map { pagingData ->
-                pagingData.map { domainModel ->
-                    uiMapper.mapTo(domainModel)
-                }
-            }.flowOn(Dispatchers.IO)
-    }
+//    fun getBreweries(): Flow<PagingData<BreweryUiModel>> {
+//        logcat("_sortFlowQeaury") { "${_sortFlowQeaury.value}" }
+//        return breweriesRemoteDataSource.getBreweries(_sortFlowQeaury.value?.toQuery())
+//            .map { pagingData ->
+//                pagingData.map { domainModel ->
+//                    uiMapper.mapTo(domainModel)
+//                }
+//            }.flowOn(Dispatchers.IO)
+//    }
 
 
     private var searchJob: Job? = null
     fun search(query: String) {
         searchJob?.cancel()
-        searchJob=viewModelScope.launch {
+        searchJob = viewModelScope.launch {
             delay(500)
-            if(query.isNotEmpty()) {
+            if (query.isNotEmpty()) {
                 val searchResult = breweriesUseCase.search(query).map { domainModule ->
                     uiMapper.mapTo(domainModule)
                 }
                 _searchFlow.update {
                     searchResult
                 }
-            }else{
-                getBreweries()
+            } else {
+//                getBreweries()
             }
         }
     }
 
-    fun clearSearch(){
+    fun clearSearch() {
         viewModelScope.launch {
             _searchFlow.update {
                 null
@@ -108,9 +107,15 @@ class ListViewModel(
 
         sortQuery = previousValue?.toQuery()
 
-        _sortFlowQeaury.compareAndSet(_sortFlowQeaury.value, previousValue)
+//        _sortFlowQeaury.compareAndSet(_sortFlowQeaury.value, previousValue)
+        viewModelScope.launch {
+            _sortFlowQeaury.emit(
+                previousValue
+            )
+        }
 
-        this.getBreweries()
+
+//        this.getBreweries()
     }
 
 
@@ -125,5 +130,17 @@ class ListViewModel(
     fun Pair<SortField, Order>.toQuery(): String {
         return "${this.first}:${this.second}"
     }
+
+    //
+    val fooSortFlow: MutableStateFlow<Pair<SortField, Order>?> = MutableStateFlow(null)
+    val fooData = fooSortFlow.flatMapLatest {
+        breweriesRemoteDataSource.getBreweries(it?.toQuery())
+            .map { pagingData ->
+                pagingData.map { domainModel ->
+                    uiMapper.mapTo(domainModel)
+                }
+            }.flowOn(Dispatchers.IO)
+    }
+    //
 
 }

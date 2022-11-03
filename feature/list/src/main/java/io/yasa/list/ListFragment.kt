@@ -14,7 +14,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
@@ -164,7 +163,8 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
 
 
             lifecycleScope.launch {
-                viewModel.getBreweries().collect { pagingData ->
+//                viewModel.getBreweries().collect { pagingData ->
+                viewModel.fooData.collect { pagingData ->
                     logcat { pagingData.toString() }
                     adapter?.submitData(pagingData)
                     viewBinding.srlRefresh.isRefreshing = false
@@ -174,30 +174,13 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
 
             with(viewModel) {
                 lifecycleScope.launch {
-                    searchFlow.collect { uiList ->
-                        if (uiList.isNullOrEmpty()) {
-                            uiList?.toString()
-                            adapter?.apply {
-                                refresh()
-                            }
-
-                        } else {
-                            uiList?.let {
-                                with(viewBinding) {
-                                    adapter?.apply {
-                                        submitData(PagingData.from(it))
-                                    }
-                                    viewBinding.rvItems.smoothScrollToPosition(0)
-                                }
-                            }
-                        }
-                    }
-                }
-                lifecycleScope.launch {
                     sortFlow.collect {
                         logcat("sortFlow") { "$it" }
                         addSortTag(it)
+                        viewModel.fooSortFlow.emit(it)
+                        adapter?.notifyDataSetChanged()
                         adapter?.refresh()
+                        viewBinding.rvItems.scrollToPosition(0)
                     }
                 }
             }
@@ -211,6 +194,9 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             }
         }
 
+        viewBinding.fabUp.setOnClickListener {
+            viewBinding.rvItems.scrollToPosition(0)
+        }
 
 
         lifecycleScope.launch {
