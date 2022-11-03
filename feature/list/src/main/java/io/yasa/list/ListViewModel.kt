@@ -2,7 +2,6 @@ package io.yasa.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
 import androidx.paging.map
 import io.yasa.domain.datasource.BreweriesRemoteDataSource
 import io.yasa.domain.usecase.BreweriesUseCase
@@ -73,16 +72,14 @@ class ListViewModel(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500)
-            if (query.isNotEmpty()) {
-                val searchResult = breweriesUseCase.search(query).map { domainModule ->
-                    uiMapper.mapTo(domainModule)
-                }
-                _searchFlow.update {
-                    searchResult
-                }
-            } else {
-//                getBreweries()
+
+
+            viewModelScope.launch {
+                val foo=fooSortFlow.value?.copy(search = query)
+                fooSortFlow.emit(foo)
             }
+
+
         }
     }
 
@@ -105,20 +102,13 @@ class ListViewModel(
         }
         logcat("sort") { "${previousValue?.first} | ${previousValue?.second}" }
 
-
         sortQuery = previousValue?.toQuery()
 
-//        _sortFlowQeaury.compareAndSet(_sortFlowQeaury.value, previousValue)
         viewModelScope.launch {
-            _sortFlowQeaury.emit(
-                previousValue
-            )
+            val foo=fooSortFlow.value?.copy(sort = previousValue)
+            fooSortFlow.emit(foo)
         }
-
-
-//        this.getBreweries()
     }
-
 
     enum class SortField {
         NAME, TYPE, DATE, NI
@@ -133,15 +123,24 @@ class ListViewModel(
     }
 
     //
-    val fooSortFlow: MutableStateFlow<Pair<SortField, Order>?> = MutableStateFlow(null)
+    val fooSortFlow: MutableStateFlow<QueryParams?> = MutableStateFlow(QueryParams())
     val fooData = fooSortFlow.flatMapLatest {
-        breweriesRemoteDataSource.getBreweries(it?.toQuery())
+        var sort = it?.sort
+        var search = it?.search
+
+        breweriesRemoteDataSource.getBreweries(sort?.toQuery(),search)
             .map { pagingData ->
                 pagingData.map { domainModel ->
                     uiMapper.mapTo(domainModel)
                 }
-            }.cachedIn(viewModelScope)
+            }
     }
+
+    data class QueryParams(
+        var sort: Pair<SortField, Order>? = null,
+        var search: String? = null
+    )
+
     //
 
 }

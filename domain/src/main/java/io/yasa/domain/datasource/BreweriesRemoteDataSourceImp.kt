@@ -48,4 +48,25 @@ class BreweriesRemoteDataSourceImp(
         ).flow
     }
 
+    override fun getBreweries(
+        sort: String?,
+        search: String?
+    ): Flow<PagingData<BreweryDomainModel>> {
+        return Pager(
+            pagingSourceFactory = {
+                BreweriesPagingSource(
+                    breweriesUseCase,
+                    sort,
+                    search
+                )
+            },
+            config = PagingConfig(
+                10
+            ),
+//            remoteMediator = BreweriesMediator(
+//                breweriesRepository
+//            )
+        ).flow
+    }
+
 }

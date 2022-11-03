@@ -29,7 +29,12 @@ class BreweriesPagingSource(
             val page = params.key ?: FIRST_PAGE
 //            val response = useCase.getBreweries(page)
 //            val response = useCase.getAndSaveBreweries(page)
-            val response = useCase.getAndSaveBreweries(page,sort,)
+//            val response = useCase.getAndSaveBreweries(page,sort,)
+            val response = if (searchQuery.isNullOrEmpty()) {
+                useCase.getAndSaveBreweries(page, sort)
+            } else {
+                useCase.search(searchQuery ?: "")
+            }
             logcat { response.toString() }
             LoadResult.Page(
                 data = response,

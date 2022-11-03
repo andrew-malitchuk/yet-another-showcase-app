@@ -164,7 +164,8 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
 
             lifecycleScope.launch {
 //                viewModel.getBreweries().collect { pagingData ->
-                viewModel.fooData.collect { pagingData ->
+                viewModel.fooData.collectLatest { pagingData ->
+//                viewModel.barData.collectLatest { pagingData ->
                     logcat { pagingData.toString() }
                     adapter?.submitData(pagingData)
                     viewBinding.srlRefresh.isRefreshing = false
@@ -177,7 +178,10 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                     sortFlow.collect {
                         logcat("sortFlow") { "$it" }
                         addSortTag(it)
-                        viewModel.fooSortFlow.emit(it)
+
+//                        viewModel.fooSortFlow.emit(it)
+                        viewModel.sort(it?.first,it?.second)
+
                         adapter?.notifyDataSetChanged()
                         adapter?.refresh()
                         viewBinding.rvItems.scrollToPosition(0)
