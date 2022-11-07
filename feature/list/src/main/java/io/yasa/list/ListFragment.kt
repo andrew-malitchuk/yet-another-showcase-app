@@ -137,7 +137,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
 
             textField.setEndIconOnClickListener {
                 tietInput.setText("")
-                viewModel.clearSearch()
+                viewModel.search(null)
                 addSearchTag(null)
             }
 

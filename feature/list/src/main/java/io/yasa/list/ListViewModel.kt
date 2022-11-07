@@ -68,7 +68,7 @@ class ListViewModel(
 
 
     private var searchJob: Job? = null
-    fun search(query: String) {
+    fun search(query: String?) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500)
@@ -81,15 +81,6 @@ class ListViewModel(
 
 
         }
-    }
-
-    fun clearSearch() {
-        viewModelScope.launch {
-            _searchFlow.update {
-                null
-            }
-        }
-
     }
 
     fun sort(field: SortField? = null, order: Order? = null) {
