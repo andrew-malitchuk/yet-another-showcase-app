@@ -94,18 +94,14 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             mbtgFeatures.addOnButtonCheckedListener { _, checkedId, isChecked ->
                 if (checkedId == btnSort.id) {
                     llSort.isVisible = isChecked
-
                     if (!isChecked) {
                         // Clear tags
-                        addSortTag(null)
+//                        addSortTag(null)
                     } else {
                         // Fulfill sort
                         viewModel.sort()
                     }
 
-                }
-                if (checkedId == btnFilter.id) {
-                    llSort.isVisible = isChecked
                 }
             }
 
@@ -124,7 +120,6 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                             viewModel.sort(field = SortField.DATE)
                     }
                 }
-
             }
 
             mbtgSortOrder.addOnButtonCheckedListener { group, checkedId, isChecked ->
@@ -139,7 +134,6 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                     }
                 }
             }
-
 
             textField.setEndIconOnClickListener {
                 tietInput.setText("")
@@ -161,11 +155,8 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
             }
             btnRetry.setOnClickListener { adapter?.refresh() }
 
-
             lifecycleScope.launch {
-//                viewModel.getBreweries().collect { pagingData ->
                 viewModel.fooData.collectLatest { pagingData ->
-//                viewModel.barData.collectLatest { pagingData ->
                     logcat { pagingData.toString() }
                     adapter?.submitData(pagingData)
                     viewBinding.srlRefresh.isRefreshing = false
@@ -175,14 +166,11 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
 
             with(viewModel) {
                 lifecycleScope.launch {
-                    sortFlow.collect {
-                        logcat("sortFlow") { "$it" }
-                        addSortTag(it)
-
-//                        viewModel.fooSortFlow.emit(it)
-                        viewModel.sort(it?.first,it?.second)
-
-                        adapter?.notifyDataSetChanged()
+                    fooSortFlow.collect {
+                        val sort = it?.sort
+                        logcat("sortFlow") { "$sort" }
+                        addSortTag(sort)
+                        viewModel.sort(sort?.first,sort?.second)
                         adapter?.refresh()
                         viewBinding.rvItems.scrollToPosition(0)
                     }

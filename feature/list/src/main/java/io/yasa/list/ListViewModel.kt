@@ -102,9 +102,8 @@ class ListViewModel(
         }
         logcat("sort") { "${previousValue?.first} | ${previousValue?.second}" }
 
-        sortQuery = previousValue?.toQuery()
-
         viewModelScope.launch {
+            _sortFlowQeaury.emit(previousValue)
             val foo=fooSortFlow.value?.copy(sort = previousValue)
             fooSortFlow.emit(foo)
         }
