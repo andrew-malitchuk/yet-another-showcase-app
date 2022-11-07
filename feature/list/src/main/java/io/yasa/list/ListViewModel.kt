@@ -6,11 +6,11 @@ import androidx.paging.map
 import io.yasa.domain.datasource.BreweriesRemoteDataSource
 import io.yasa.domain.usecase.BreweriesUseCase
 import io.yasa.models.data.mapper.BreweryDomainUiMapper
-import io.yasa.models.data.model.BreweryUiModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import logcat.logcat
 
@@ -21,58 +21,17 @@ class ListViewModel(
 
     private val uiMapper: BreweryDomainUiMapper = BreweryDomainUiMapper()
 
-    private val _searchFlow: MutableStateFlow<List<BreweryUiModel>?> = MutableStateFlow(null)
-    val searchFlow = _searchFlow.asStateFlow()
-
     private val _sortFlowQeaury: MutableStateFlow<Pair<SortField, Order>?> = MutableStateFlow(
         Pair(
             SortField.NAME, Order.ASC
         )
     )
-    val sortFlow = _sortFlowQeaury.asStateFlow()
-    var sortQuery: String? = _sortFlowQeaury.value?.toQuery()
-
-
-    val breweriesStateFlow: Flow<List<BreweryUiModel>> =
-        breweriesUseCase.breweriesStateFlow.map { domainList ->
-            domainList.map { domainItem ->
-                uiMapper.mapTo(domainItem)
-            }
-        }
-
-    suspend fun getBrewery(id: String): BreweryUiModel {
-        return breweriesUseCase.getBrewery(id).let { domainModel ->
-            uiMapper.mapTo(domainModel)
-        }
-    }
-
-    fun getAndSaveBreweries(page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            breweriesUseCase.getAndSaveBreweries(page)
-        }
-    }
-
-    suspend fun refreshBreweries() {
-        breweriesUseCase.refreshBreweries(1)
-    }
-
-//    fun getBreweries(): Flow<PagingData<BreweryUiModel>> {
-//        logcat("_sortFlowQeaury") { "${_sortFlowQeaury.value}" }
-//        return breweriesRemoteDataSource.getBreweries(_sortFlowQeaury.value?.toQuery())
-//            .map { pagingData ->
-//                pagingData.map { domainModel ->
-//                    uiMapper.mapTo(domainModel)
-//                }
-//            }.flowOn(Dispatchers.IO)
-//    }
-
 
     private var searchJob: Job? = null
     fun search(query: String?) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500)
-
 
             viewModelScope.launch {
                 val foo=fooSortFlow.value?.copy(search = query)
@@ -112,7 +71,6 @@ class ListViewModel(
         return "${this.first}:${this.second}"
     }
 
-    //
     val fooSortFlow: MutableStateFlow<QueryParams?> = MutableStateFlow(QueryParams())
     val fooData = fooSortFlow.flatMapLatest {
         var sort = it?.sort
@@ -130,7 +88,5 @@ class ListViewModel(
         var sort: Pair<SortField, Order>? = null,
         var search: String? = null
     )
-
-    //
 
 }
