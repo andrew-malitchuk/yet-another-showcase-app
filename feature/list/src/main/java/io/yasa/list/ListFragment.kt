@@ -6,6 +6,8 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.children
@@ -102,6 +104,8 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                         viewModel.sort()
                     }
 
+                } else if (checkedId == btnFilter.id) {
+                    llFilter.isVisible = isChecked
                 }
             }
 
@@ -149,6 +153,28 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                 }
             }
 
+            tietCity.doAfterTextChanged {
+                if (!it.isNullOrEmpty()) {
+                    Toast.makeText(context, it ?: "", Toast.LENGTH_SHORT).show()
+                    viewModel.filter(city = it.toString())
+//                    addSearchTag(it.toString())
+                }
+            }
+            tietState.doAfterTextChanged {
+                if (!it.isNullOrEmpty()) {
+                    Toast.makeText(context, it ?: "", Toast.LENGTH_SHORT).show()
+                    viewModel.filter(state = it.toString())
+//                    addSearchTag(it.toString())
+                }
+            }
+            tietType.doAfterTextChanged {
+                if (!it.isNullOrEmpty()) {
+                    Toast.makeText(context, it ?: "", Toast.LENGTH_SHORT).show()
+                    viewModel.filter(type = it.toString())
+//                    addSearchTag(it.toString())
+                }
+            }
+
             srlRefresh.setOnRefreshListener {
                 adapter?.refresh()
                 viewBinding.rvItems.isNestedScrollingEnabled = false
@@ -170,7 +196,7 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
                         val sort = it?.sort
                         logcat("sortFlow") { "$sort" }
                         addSortTag(sort)
-                        viewModel.sort(sort?.first,sort?.second)
+                        viewModel.sort(sort?.first, sort?.second)
                         adapter?.refresh()
                         viewBinding.rvItems.scrollToPosition(0)
                     }
@@ -182,12 +208,47 @@ class ListFragment : Fragment(R.layout.fragment_list), KodeinAware {
 
         KeyboardVisibilityEvent.registerEventListener(requireActivity()) {
             if (!it) {
-                viewBinding.tietInput.clearFocus()
+                with(viewBinding) {
+                    tietInput.clearFocus()
+                    tietCity.clearFocus()
+                    tietState.clearFocus()
+                    tietType.clearFocus()
+                }
             }
         }
 
         viewBinding.fabUp.setOnClickListener {
             viewBinding.rvItems.scrollToPosition(0)
+        }
+
+        ArrayAdapter.createFromResource(
+            requireContext(), io.yasa.localization.R.array.types,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            viewBinding.sTypes.adapter = adapter
+        }
+
+        viewBinding.sTypes.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(
+                    requireContext(),
+                    "${parent?.getItemAtPosition(position).toString()}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
         }
 
 

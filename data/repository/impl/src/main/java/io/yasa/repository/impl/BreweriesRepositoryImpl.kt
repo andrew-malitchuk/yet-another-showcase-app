@@ -27,7 +27,30 @@ class BreweriesRepositoryImpl(
         return breweriesNetSource
             .getBreweries(page, perPage)
             .map(netDbMapper::mapTo)
-        .also { dbList ->
+            .also { dbList ->
+                if (page == 1) {
+                    breweriesDbSource.replaceAll(dbList)
+                } else {
+                    breweriesDbSource.addOrReplace(dbList)
+                }
+            }.let { netList ->
+                netList.map { netModel ->
+                    dbRepoMapper.mapTo(netModel)
+                }
+            }
+    }
+
+    override suspend fun getAndSaveBreweries(
+        page: Int,
+        perPage: Int,
+        sort: String?
+    ): List<BreweryRepoModel> {
+//        return breweriesNetSource.getBreweries(page, perPage).let { netList ->
+        return breweriesNetSource.getBreweries(page, perPage, sort).let { netList ->
+            netList.map { netModel ->
+                netDbMapper.mapTo(netModel)
+            }
+        }.also { dbList ->
             if (page == 1) {
                 breweriesDbSource.replaceAll(dbList)
             } else {
@@ -40,9 +63,11 @@ class BreweriesRepositoryImpl(
         }
     }
 
-    override suspend fun getAndSaveBreweries(page: Int, perPage: Int, sort:String?): List<BreweryRepoModel> {
+    override suspend fun getAndSaveBreweries(
+        page: Int, perPage: Int, sort: String?, filter: Triple<String?,String?,String?>?
+    ): List<BreweryRepoModel> {
 //        return breweriesNetSource.getBreweries(page, perPage).let { netList ->
-        return breweriesNetSource.getBreweries(page, perPage,sort).let { netList ->
+        return breweriesNetSource.getBreweries(page, perPage, sort, filter).let { netList ->
             netList.map { netModel ->
                 netDbMapper.mapTo(netModel)
             }
@@ -87,8 +112,8 @@ class BreweriesRepositoryImpl(
         }
     }
 
-    override suspend fun search(query: String) : List<BreweryRepoModel> {
-     return  breweriesNetSource.search(query).let { netList ->
+    override suspend fun search(query: String): List<BreweryRepoModel> {
+        return breweriesNetSource.search(query).let { netList ->
             netList.map { netModel ->
                 netDbMapper.mapTo(netModel)
             }

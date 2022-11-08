@@ -62,7 +62,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="0dp"
-                    android:enabled="false"
                     app:icon="@drawable/ic_baseline_filter_alt_24" />
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -153,6 +152,93 @@
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/md_theme_light_surface"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/filed_city"
+                android:layout_marginTop="@dimen/material_layout_keylines_screen_edge_margin"
+                android:layout_marginHorizontal="@dimen/material_layout_keylines_screen_edge_margin"
+                app:endIconDrawable="@drawable/ic_baseline_clear_24"
+                app:endIconMode="custom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
+                    tools:ignore="TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/material_layout_keylines_screen_edge_margin"
+                android:hint="@string/filed_state"
+                app:endIconDrawable="@drawable/ic_baseline_clear_24"
+                app:endIconMode="custom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
+                    tools:ignore="TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/material_layout_keylines_screen_edge_margin"
+                android:hint="@string/filed_type"
+                app:endIconDrawable="@drawable/ic_baseline_clear_24"
+                app:endIconMode="custom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
+                    tools:ignore="TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/s_types"
+                android:layout_marginHorizontal="@dimen/material_layout_keylines_screen_edge_margin"
+                android:layout_width="match_parent"
+                android:layout_height="56dp" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/material_layout_keylines_screen_edge_margin"
                 android:layout_height="1dp" />
 
         </LinearLayout>

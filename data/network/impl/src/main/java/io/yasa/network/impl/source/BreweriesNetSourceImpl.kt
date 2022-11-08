@@ -16,9 +16,20 @@ class BreweriesNetSourceImpl(
         getBreweries(page, perPage)
     }
 
-    override suspend fun getBreweries(page: Int, perPage: Int,sort:String?): List<BreweryNetModel> = launch {
+    override suspend fun getBreweries(
+        page: Int,
+        perPage: Int,
+        sort: String?
+    ): List<BreweryNetModel> = launch {
 //        getBreweries(page, perPage)
-        getBreweries(page, perPage,sort)
+        getBreweries(page, perPage, sort)
+    }
+
+    override suspend fun getBreweries(
+        page: Int, perPage: Int, sort: String?, filter: Triple<String?, String?, String?>?
+    ): List<BreweryNetModel> = launch {
+//        getBreweries(page, perPage)
+        getBreweries(page, perPage, sort, filter?.first, filter?.second, filter?.third)
     }
 
     override suspend fun search(query: String): List<BreweryNetModel> = launch {

@@ -12,4 +12,7 @@
     <string name="no_data">No data</string>
     <string name="retry">Retry</string>
     <string name="error">Error</string>
+    <string name="filed_type">Type</string>
+    <string name="filed_city">City</string>
+    <string name="filed_state">State</string>
 </resources>

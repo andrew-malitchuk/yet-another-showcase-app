@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="types">
+        <item>micro</item>
+        <item>nano</item>
+        <item>regional</item>
+        <item>brewpub</item>
+        <item>large</item>
+        <item>planning</item>
+        <item>bar</item>
+        <item>contract</item>
+        <item>proprietor</item>
+        <item>closed</item>
+    </string-array>
+</resources>
